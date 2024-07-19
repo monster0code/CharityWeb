@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CharityWeb.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,19 +12,29 @@ namespace CharityWeb.Controllers
         // GET: Front
         public ActionResult Index()
         {
-            return View();
+            NursingHomeDAL dal = new NursingHomeDAL();
+            var nursingHomes = dal.GetAllNursingHomes();
+            return View(nursingHomes);
         }
         public ActionResult Place()
         {
-            return View();
+            NursingHomeDAL dal = new NursingHomeDAL();
+            var nursingHomes = dal.GetAllNursingHomes();
+            return View(nursingHomes);
         }
         public ActionResult Activity()
         {
             return View();
         }
-        public ActionResult Detail()
+        public ActionResult Detail(int id)
         {
-            return View();
+            NursingHomeDAL dal = new NursingHomeDAL();
+            var nursingHome = dal.GetNursingHomeById(id);
+            if (nursingHome == null)
+            {
+                return HttpNotFound();
+            }
+            return View(nursingHome);
         }
     }
 }

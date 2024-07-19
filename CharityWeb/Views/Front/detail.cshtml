@@ -1,6 +1,8 @@
 ﻿@{
     Layout = null;
 }
+@using Microsoft.AspNet.Identity
+@model CharityWeb.Models.NursingHome
 
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -8,8 +10,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>精心挑选养老机构</title>
+    <title>养老院信息</title>
     <link rel="stylesheet" href="/Content/static/css/styles.css">
+    <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -85,8 +88,8 @@
 
         .details {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: flex-start;
             background-color: #fff;
             padding: 20px;
             margin-top: 20px;
@@ -104,7 +107,16 @@
 
         .details-info {
             max-width: 45%;
+            text-align: left;
+            margin-left: 100px;
+            /* Add margin to ensure some space */
+            flex-grow: 1;
+            /* Ensure the text takes the remaining space */
         }
+
+            .details-info h2 {
+                margin-bottom: 20px;
+            }
 
         .price {
             color: red;
@@ -121,6 +133,27 @@
                 margin: 10px 0;
             }
 
+                .features li img {
+                    width: 30px;
+                    /* Adjust the width as needed */
+                    height: 30px;
+                    /* Adjust the height as needed */
+                    margin-right: 10px;
+                    /* Space between the icon and text */
+                    vertical-align: middle;
+                    /* Align icons with text */
+                }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+            .feature-item span {
+                margin-left: 10px;
+            }
+
         .description {
             background-color: #fff;
             padding: 20px;
@@ -130,28 +163,63 @@
             max-width: 1200px;
             margin: 20px auto;
         }
+
+        .registration-button {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            /* Green */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            .registration-button:hover {
+                background-color: #45a049;
+            }
     </style>
 </head>
 
 <body>
     <header>
-        <div class="top-bar">
-            <div class="location">全国</div>
-            <div class="contact">
-                <span>400 687 2088</span>
-                <span> | </span>
-                <a href="#">登录</a>
+        <div class="top-bar-wrapper">
+            <div class="top-bar">
+                <div class="webname">
+                    <img src="~/Content/static/icon/service.png" alt="icon" class="webname-icon">
+                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">Aged Care</a>
+                </div>
+                <div class="contact">
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="contact">
+                                <span style="margin-right: 10px">
+                                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                                </span>
+                                <span><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="contact">
+                            <span>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</span>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
         <nav>
-            <a href="#">首页</a>
-            <a href="#">养老院</a>
-            <a href="#">养老资讯</a>
-            <a href="#">养老活动</a>
-            <a href="#">养老需求</a>
-            <a href="#">公益活动</a>
-            <a href="#">问答</a>
-            <a href="#">人才</a>
+            <a href="@Url.Action("index", "Front")">Index</a>
+            <a href="@Url.Action("place", "Front")">Nursing home</a>
+            <a href="@Url.Action("activity", "Front")">Activity</a>
+            <a href="#">My appointment</a>
         </nav>
     </header>
 
@@ -165,14 +233,16 @@
             <img src="@Model.ImageUrl" alt="@Model.Name">
             <div class="details-info">
                 <h2>@Model.Name</h2>
-                <p class="price">¥@Model.Price/月起</p>
-                <p class="location">¥@Model.Location</p>
+                <p class="price">@Model.Price</p>
                 <ul class="features">
-                    <li>异地体验 / 品牌连锁 / 试住体验</li>
-                    <li>不能自理 / 特护</li>
-                    <li>海南拉僧庙镇</li>
-                    <li>2023-11-20 17:04</li>
+                    <li>可预约</li>
+                    <li><img src="/Content/static/icon/calendar1.png" alt="icon"> 开始时间: 2023-11-20 17:04</li>
+                    <li><img src="/Content/static/icon/calendar2.png" alt="icon"> 结束时间: 无</li>
+                    <li><img src="/Content/static/icon/person.png" alt="icon"> 限制人数: 无</li>
+                    <li><img src="/Content/static/icon/location.png" alt="icon"> @Model.Location</li>
                 </ul>
+                <!-- <a href="#" class="registration-button disabled">已结束</a> -->
+                <button class="registration-button abled">预约</button>
             </div>
         </div>
         <div class="description">
@@ -192,6 +262,7 @@
             </div>
         </div>
     </div>
+    <script src="/Content/static/js/feedbacktest.js"></script>
 </body>
 
 </html>

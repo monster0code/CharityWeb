@@ -206,7 +206,7 @@
             <div class="top-bar">
                 <div class="webname">
                     <img src="/Content/static/icon/service.png" alt="icon" class="webname-icon">
-                    <a href="index" style="color: white; text-decoration: none;">Aged Care</a>
+                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">Aged Care</a>
                 </div>
                 <div class="contact">
                     @if (Request.IsAuthenticated)
@@ -233,9 +233,9 @@
             </div>
         </div>
         <nav>
-            <a href="index">Index</a>
-            <a href="place">Nursing home</a>
-            <a href="activity">Activity</a>
+            <a href="@Url.Action("index", "Front")">Index</a>
+            <a href="@Url.Action("place", "Front")">Nursing home</a>
+            <a href="@Url.Action("activity", "Front")">Activity</a>
             <a href="#">My appointment</a>
         </nav>
     </header>
