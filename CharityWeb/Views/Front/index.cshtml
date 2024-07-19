@@ -1,0 +1,340 @@
+﻿@{
+    Layout = null;
+}
+@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亲乐康养老网</title>
+    <link rel="stylesheet" href="/Content/static/css/styles.css">
+    @*<script src="static/js/jquery-3.6.0.min.js"></script>*@
+    <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
+    <style>
+        #BaiduMap {
+            width: 800px;
+            height: 500px;
+            margin: 0 auto;
+            /* 使用 margin: 0 auto; 实现水平居中 */
+            border: 1px solid #ccc;
+        }
+
+        .more_card {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            /* Green */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            .more_card:hover {
+                background-color: #45a049;
+            }
+    </style>
+    <script src="https://api.map.baidu.com/api?v=3.0&ak=u4DrOhWuNvTNNLQLWQ0tbNkfMSWtj1zr"></script>
+</head>
+
+<body>
+    <header>
+        <div class="top-bar-wrapper">
+            <div class="top-bar">
+                <div class="webname">
+                    <img src="~/Content/static/icon/service.png" alt="icon" class="webname-icon">
+                    <a href="index" style="color: white; text-decoration: none;">Aged Care</a>
+                </div>
+                <div class="contact">
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="contact">
+                                <span style="margin-right: 10px">
+                                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                                </span>
+                                <span><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="contact">
+                            <span>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <nav>
+            <a href="index">Index</a>
+            <a href="place">Nursing home</a>
+            <a href="activity">Activity</a>
+            <a href="#">My appointment</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="slider-wrapper" onmouseover="showArrows()" onmouseout="hideArrows()">
+            <div class="slider" id="mainSlider">
+                <!-- Slider Images -->
+                <div class="slide active"
+                     data-video="https://www.youtube.com/embed/MVJbAPbaKbc?si=G9JsuTdXouyNxi1Q&autoplay=1">
+                    <div class="play-button" onclick="playVideo(1)">
+                        <img src="/Content//static/pic/play-button.png" alt="Play">
+                    </div>
+                    <img src="/Content//static/pic/130259191.jpg" alt="Image 1">
+                </div>
+                <div class="slide" data-video="https://www.youtube.com/embed/9U0N7-xDx-0">
+                    <div class="play-button" onclick="playVideo(2)">
+                        <img src="/Content//static/pic/play-button.png" alt="Play">
+                    </div>
+                    <img src="/Content//static/pic/130240401.jpg" alt="Image 2">
+                </div>
+                <div class="slide" data-video="https://www.youtube.com/embed/_4e4Ood1Ss8">
+                    <div class="play-button" onclick="playVideo(3)">
+                        <img src="/Content//static/pic/play-button.png" alt="Play">
+                    </div>
+                    <img src="/Content//static/pic/095824411.png" alt="Image 3">
+                </div>
+                <!-- Navigation Arrows -->
+                <a class="prev" onclick="moveSlide(-1)">&#10094;</a>
+                <a class="next" onclick="moveSlide(1)">&#10095;</a>
+            </div>
+            <!-- Indicators -->
+            <div class="slider-dots">
+                <span class="dot active" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+        </div>
+
+
+        <section class="popular-section">
+            <h2>Popular nursing home</h2>
+            <p>Nursing homes across the country</p>
+            <div class="cards">
+                <div class="card">
+                        <img src="/Content/static/pic/170333121.png" alt="Card 1">
+                        <div class="card-info">
+                            <p class="price">¥3900.00/月起</p>
+                            <p>海淀至孝养老康乐中心</p>
+                            <p class="location">北京市海淀区</p>
+                        </div>
+                        <button class="hover-button"></button>
+                    </div>
+                    <div class="card">
+                        <img src="https://www.qckyly.com/data/upload/202311/20/170134351.png" alt="Card 2">
+                        <div class="card-info">
+                            <p class="price">¥2500.00/月起</p>
+                            <p>苏州市相城区尚嘉托老院</p>
+                            <p class="location">江苏苏州市</p>
+                        </div>
+                        <button class="hover-button"></button>
+                    </div>
+                    <div class="card">
+                        <img src="https://www.qckyly.com/data/upload/202311/20/165954631.png" alt="Card 3">
+                        <div class="card-info">
+                            <p class="price">¥2750.00/月起</p>
+                            <p>北京市早产区富养优养老院</p>
+                            <p class="location">北京市朝阳区</p>
+                        </div>
+                        <button class="hover-button"></button>
+                    </div>
+                    <div class="card">
+                        <img src="https://www.qckyly.com/data/upload/202311/20/165807941.png" alt="Card 3">
+                        <div class="card-info">
+                            <p class="price">¥2750.00/月起</p>
+                            <p>北京市早产区富养优养老院</p>
+                            <p class="location">北京市丰台区</p>
+                        </div>
+                        <button class="hover-button"></button>
+                    </div>
+                    <div class="card">
+                        <img src="https://www.qckyly.com/data/upload/202311/20/165614941.png" alt="Card 3">
+                        <div class="card-info">
+                            <p class="price">¥2750.00/月起</p>
+                            <p>北京市早产区富养优养老院</p>
+                            <p class="location">南京市鼓楼区</p>
+                        </div>
+                        <button class="hover-button"></button>
+                    </div>
+                    <div class="card">
+                        <img src="https://www.qckyly.com/data/upload/202311/20/170552111.png" alt="Card 3">
+                        <div class="card-info">
+                            <p class="price">¥2750.00/月起</p>
+                            <p>北京市早产区富养优养老院</p>
+                            <p class="location">上海市浦东区</p>
+                        </div>
+                        <button class="hover-button"></button>
+                    </div>
+                <!-- Add more cards as needed -->
+ @*               @foreach (var home in Model)
+                {
+                    <div class="card">
+                        <a href="@Url.Action("Detail", "Front", new { id = home.ID })">
+                            <img src="@home.ImageUrl" alt="@home.Name" />
+                        </a>
+                        <div class="card-info">
+                            <p class="price">¥@home.Price/月起</p>
+                            <p>@home.Name</p>
+                            <p class="location">@home.Location</p>
+                        </div>
+                    </div>
+                }*@
+            </div>
+        </section>
+    </main>
+    <!-- Modal Structure -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <iframe id="youtube-video" width="560" height="315" src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    <button class="more_card" onclick="window.location.href='place'">More</button>
+    <!-- Baidu Map -->
+    <h2 style="text-align: center; margin-top: 50px;">National nursing home map</h2>
+    <div id="BaiduMap"></div>
+
+    <!-- <button class="feedback-button">Feedback</button> -->
+    <!-- <div class="feedback-button-container" id="feedbackButton">
+        Feedback
+    </div> -->
+    <script src="/Content/static/js/feedbacktest.js"></script>
+</body>
+
+<script>
+    let slideIndex = 1;
+    let slideInterval;
+
+    function initSlider() {
+        showSlides(slideIndex);
+        slideInterval = setInterval(function () {
+            showSlides(slideIndex += 1);
+        }, 3000); // Change image every 3 seconds
+    }
+
+    function moveSlide(n) {
+        clearInterval(slideInterval);
+        showSlides(slideIndex += n);
+        slideInterval = setInterval(function () {
+            showSlides(slideIndex += 1);
+        }, 3000); // Restart interval
+    }
+
+    function currentSlide(n) {
+        clearInterval(slideInterval);
+        showSlides(slideIndex = n);
+        slideInterval = setInterval(function () {
+            showSlides(slideIndex += 1);
+        }, 3000); // Restart interval
+    }
+
+    function showSlides(n) {
+        let i;
+        const slides = document.getElementsByClassName("slide");
+        const dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+
+    // Function to play video
+    function playVideo(index) {
+        const videoUrl = document.getElementsByClassName("slide")[index - 1].getAttribute('data-video');
+        openModal(videoUrl);
+    }
+
+    // Add modal functionality to open videos
+    function openModal(videoUrl) {
+        const iframe = document.getElementById("youtube-video");
+        const modal = document.getElementById("videoModal");
+        iframe.src = videoUrl;
+        modal.style.display = "flex";
+    }
+
+    function closeModal() {
+        const modal = document.getElementById("videoModal");
+        const iframe = document.getElementById("youtube-video");
+        iframe.src = "";
+        modal.style.display = "none";
+    }
+
+    function showArrows() {
+        document.querySelector('.prev').style.opacity = 1;
+        document.querySelector('.next').style.opacity = 1;
+    }
+
+    function hideArrows() {
+        document.querySelector('.prev').style.opacity = 0;
+        document.querySelector('.next').style.opacity = 0;
+    }
+
+    // Initialize the slider when the page loads
+    window.onload = function () {
+        initSlider();
+    };
+
+
+    // 初始化地图
+    var map = new BMap.Map("BaiduMap");
+    var point = new BMap.Point(116.331398, 39.897445);
+    map.centerAndZoom(point, 12);
+    map.enableScrollWheelZoom(true)
+
+    // 标注函数
+    function addMarker(price, location, imgUrl) {
+        var myGeo = new BMap.Geocoder();
+        myGeo.getPoint(location, function (point) {
+            if (point) {
+                var marker = new BMap.Marker(point, 12);
+                map.addOverlay(marker);
+                var infoWindow = new BMap.InfoWindow(`<div style="width:200px;overflow:hidden;"><img src="${imgUrl}" style="width:100%;height:auto;margin-bottom:10px;" /><p>${price}</p><p>${location}</p>`);
+                marker.addEventListener("click", function () {
+                    this.openInfoWindow(infoWindow);
+                });
+            } else {
+                alert("地址解析失败，请检查地址：" + location);
+            }
+        }, "北京市");
+    }
+
+    // 获取所有卡片元素
+    var cards = document.getElementsByClassName("card");
+
+    // 遍历每个卡片，添加事件监听
+    Array.prototype.forEach.call(cards, function (card) {
+        var price = card.querySelector(".price").textContent;
+        var location = card.querySelector(".location").textContent;
+        var imgUrl = card.querySelector("img").getAttribute("src");
+
+        addMarker(price, location, imgUrl);
+
+        // 点击按钮时显示对应的地图位置
+        // TODO
+        // card.querySelector(".hover-button").addEventListener("click", function () {
+        //     addMarker(price, location);
+        // });
+    });
+
+</script>
+
+</html>

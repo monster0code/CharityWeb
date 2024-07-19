@@ -1,0 +1,281 @@
+﻿@{
+    Layout = null;
+}
+@using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>精心挑选养老机构</title>
+    <link rel="stylesheet" href="/Content/static/css/styles.css">
+    <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .banner {
+            background-image: url('/Content/static/pic/095824411.png');
+            /* 替换为背景图片路径 */
+            background-size: cover;
+            background-position: center;
+            padding: 50px 0;
+            text-align: center;
+            color: #fff;
+            position: relative;
+            z-index: 0;
+        }
+
+            .banner::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.3);
+                /* 灰色阴影效果，调整透明度 */
+                z-index: 1;
+            }
+
+            .banner::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                /* 调整位置使波浪形效果显示在搜索过滤器上方 */
+                left: 0;
+                width: 100%;
+                height: 20px;
+                /* 根据需要调整高度 */
+                background-image: url('https://www.qckyly.com/static/pc/images/svgs/page-header-curv-dark-1-1.svg');
+                /* 替换为波浪形图片路径 */
+                background-size: cover;
+                background-repeat: no-repeat;
+                z-index: 1;
+            }
+
+            .banner h1,
+            .banner p {
+                position: relative;
+                z-index: 2;
+            }
+
+            .banner h1 {
+                font-size: 36px;
+                margin: 0;
+            }
+
+            .banner p {
+                font-size: 18px;
+                margin: 10px 0 0;
+            }
+
+        .content {
+            padding: 20px;
+        }
+
+        .details {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+            .details img {
+                max-width: 50%;
+                height: auto;
+                border-radius: 10px;
+            }
+
+        .details-info {
+            max-width: 45%;
+            text-align: left;
+            margin-left: 100px;
+            /* Add margin to ensure some space */
+            flex-grow: 1;
+            /* Ensure the text takes the remaining space */
+        }
+
+            .details-info h2 {
+                margin-bottom: 20px;
+            }
+
+        .price {
+            color: red;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+        }
+
+            .features li {
+                margin: 10px 0;
+            }
+
+                .features li img {
+                    width: 30px;
+                    /* Adjust the width as needed */
+                    height: 30px;
+                    /* Adjust the height as needed */
+                    margin-right: 10px;
+                    /* Space between the icon and text */
+                    vertical-align: middle;
+                    /* Align icons with text */
+                }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+            .feature-item span {
+                margin-left: 10px;
+            }
+
+        .description {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        /* .registration-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: gray;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .registration-button.disabled {
+            background-color: #ccc;
+        }
+
+        .registration-button.abled {
+            background-color: #4CAF50;
+        } */
+        .registration-button {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            /* Green */
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            .registration-button:hover {
+                background-color: #45a049;
+            }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="top-bar-wrapper">
+            <div class="top-bar">
+                <div class="webname">
+                    <img src="/Content/static/icon/service.png" alt="icon" class="webname-icon">
+                    <a href="index" style="color: white; text-decoration: none;">Aged Care</a>
+                </div>
+                <div class="contact">
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="contact">
+                                <span style="margin-right: 10px">
+                                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                                </span>
+                                <span><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="contact">
+                            <span>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <nav>
+            <a href="index">Index</a>
+            <a href="place">Nursing home</a>
+            <a href="activity">Activity</a>
+            <a href="#">My appointment</a>
+        </nav>
+    </header>
+
+    <div class="banner">
+        <h1>Carefully select nursing institutions</h1>
+        <p>Index > Nursing home > Detail</p>
+    </div>
+
+    <div class="content">
+        <div class="details">
+            <img src="/Content/static/pic/170333121.png" alt="海南圣享荣岸康养中心">
+            <div class="details-info">
+                <h2>苏州市姑苏区康养中心</h2>
+                <p class="price">¥3900.00/月起</p>
+                <ul class="features">
+                    <li>Free</li>
+                    <li><img src="/Content/static/icon/calendar1.png" alt="icon"> Start time: 2023-11-20 17:04</li>
+                    <li><img src="/Content/static/icon/calendar2.png" alt="icon"> End time: 2023-11-27 17:04</li>
+                    <li><img src="/Content/static/icon/person.png" alt="icon"> Max people: 30</li>
+                    <li><img src="/Content/static/icon/location.png" alt="icon"> location: 苏州市姑苏区</li>
+                </ul>
+                <!-- <a href="#" class="registration-button disabled">已结束</a> -->
+                <button class="registration-button abled">sign up</button>
+            </div>
+        </div>
+        <div class="description">
+            <h2>Detail info</h2>
+            <div class="introduction">
+                <h3>Organization introduction</h3>
+                <p>Meet all your beautiful fantasies about Suzhou health care life.</p>
+                <p>The Misty Rain of Jiangnan</p>
+            </div>
+            <div class="director">
+                <h3>Check-in instructions</h3>
+                <p>The cost includes bed fee, nursing fee and food fee, the price is for reference only, please call for details.</p>
+            </div>
+        </div>
+    </div>
+    <script src="/Content/static/js/feedbacktest.js"></script>
+</body>
+
+</html>

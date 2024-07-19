@@ -1,0 +1,121 @@
+/* feedback.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.feedback-button-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-color: orange;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.feedback-modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.feedback-modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    position: relative;
+}
+
+.feedback-modal-close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.feedback-modal-close:hover,
+.feedback-modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.feedback-rating {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.feedback-rating input {
+    display: none;
+}
+
+.feedback-rating label {
+    font-size: 18px;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+    text-align: center;
+    margin: 0;
+}
+
+.feedback-rating input:checked+label {
+    background-color: orange;
+    color: white;
+    border-color: orange;
+}
+
+.feedback-textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    margin-right: 0;
+}
+
+.feedback-modal-buttons {
+    text-align: right;
+}
+
+.feedback-modal-buttons button {
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.feedback-modal-buttons button.cancel {
+    background-color: #ccc;
+    color: black;
+}
