@@ -185,11 +185,13 @@
     <Compile Include="Controllers\FrontController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="DAL\ActivityDAL.cs" />
     <Compile Include="DAL\NursingHomeDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ActivityModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NursingHome.cs" />
@@ -346,6 +348,7 @@
     <Content Include="Views\Front\place.cshtml" />
     <Content Include="Views\Front\detail.cshtml" />
     <Content Include="Views\Front\activity.cshtml" />
+    <Content Include="Views\Front\activitylist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

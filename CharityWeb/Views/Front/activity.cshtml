@@ -2,6 +2,7 @@
     Layout = null;
 }
 @using Microsoft.AspNet.Identity
+@model CharityWeb.Models.ActivityModels
 
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -9,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>精心挑选养老机构</title>
+    <title>elderly activity</title>
     <link rel="stylesheet" href="/Content/static/css/styles.css">
     <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
     <style>
@@ -192,6 +193,7 @@
             border: none;
             cursor: pointer;
             border-radius: 5px;
+            margin-top: 30px;
         }
 
             .registration-button:hover {
@@ -206,7 +208,7 @@
             <div class="top-bar">
                 <div class="webname">
                     <img src="/Content/static/icon/service.png" alt="icon" class="webname-icon">
-                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">Aged Care</a>
+                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
                 </div>
                 <div class="contact">
                     @if (Request.IsAuthenticated)
@@ -235,7 +237,7 @@
         <nav>
             <a href="@Url.Action("index", "Front")">Index</a>
             <a href="@Url.Action("place", "Front")">Nursing home</a>
-            <a href="@Url.Action("activity", "Front")">Activity</a>
+            <a href="@Url.Action("activitylist", "Front")">Activity</a>
             <a href="#">My appointment</a>
         </nav>
     </header>
@@ -247,16 +249,14 @@
 
     <div class="content">
         <div class="details">
-            <img src="/Content/static/pic/170333121.png" alt="海南圣享荣岸康养中心">
+            <img src="/Content/static/pic/170333121.png" alt="@Model.Name">
             <div class="details-info">
-                <h2>苏州市姑苏区康养中心</h2>
-                <p class="price">¥3900.00/月起</p>
+                <h2>@Model.Name</h2>
+                <p class="price">¥ 0.00</p>
                 <ul class="features">
-                    <li>Free</li>
-                    <li><img src="/Content/static/icon/calendar1.png" alt="icon"> Start time: 2023-11-20 17:04</li>
-                    <li><img src="/Content/static/icon/calendar2.png" alt="icon"> End time: 2023-11-27 17:04</li>
-                    <li><img src="/Content/static/icon/person.png" alt="icon"> Max people: 30</li>
-                    <li><img src="/Content/static/icon/location.png" alt="icon"> location: 苏州市姑苏区</li>
+                    <li><img src="/Content/static/icon/calendar1.png" alt="icon"> time: @Model.Time</li>
+                    <li><img src="/Content/static/icon/person.png" alt="icon"> Max people: unlimited</li>
+                    <li><img src="/Content/static/icon/location.png" alt="icon"> location: @Model.Location</li>
                 </ul>
                 <!-- <a href="#" class="registration-button disabled">已结束</a> -->
                 <button class="registration-button abled">sign up</button>
@@ -265,15 +265,9 @@
         <div class="description">
             <h2>Detail info</h2>
             <div class="introduction">
-                <h3>Organization introduction</h3>
-                <p>Meet all your beautiful fantasies about Suzhou health care life.</p>
-                <p>The Misty Rain of Jiangnan</p>
+                <h3>Activity introduction</h3>
+                <p>@Model.Info</p>
             </div>
-            <div class="director">
-                <h3>Check-in instructions</h3>
-                <p>The cost includes bed fee, nursing fee and food fee, the price is for reference only, please call for details.</p>
-            </div>
-        </div>
     </div>
     <script src="/Content/static/js/feedbacktest.js"></script>
 </body>

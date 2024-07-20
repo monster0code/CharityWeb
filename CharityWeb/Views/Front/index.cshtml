@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>亲乐康养老网</title>
+    <title>ElderlyCare Hub</title>
     <link rel="stylesheet" href="/Content/static/css/styles.css">
     @*<script src="static/js/jquery-3.6.0.min.js"></script>*@
     <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
@@ -49,7 +49,7 @@
             <div class="top-bar">
                 <div class="webname">
                     <img src="~/Content/static/icon/service.png" alt="icon" class="webname-icon">
-                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">Aged Care</a>
+                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
                 </div>
                 <div class="contact">
                     @if (Request.IsAuthenticated)
@@ -78,7 +78,7 @@
         <nav>
             <a href="@Url.Action("index", "Front")">Index</a>
             <a href="@Url.Action("place", "Front")">Nursing home</a>
-            <a href="@Url.Action("activity", "Front")">Activity</a>
+            <a href="@Url.Action("activitylist", "Front")">Activity</a>
             <a href="#">My appointment</a>
         </nav>
     </header>

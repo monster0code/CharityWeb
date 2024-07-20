@@ -22,9 +22,11 @@ namespace CharityWeb.Controllers
             var nursingHomes = dal.GetAllNursingHomes();
             return View(nursingHomes);
         }
-        public ActionResult Activity()
+        public ActionResult Activitylist()
         {
-            return View();
+            ActivityDAL dal = new ActivityDAL();
+            var activities = dal.GetAllActivity();
+            return View(activities);
         }
         public ActionResult Detail(int id)
         {
@@ -35,6 +37,16 @@ namespace CharityWeb.Controllers
                 return HttpNotFound();
             }
             return View(nursingHome);
+        }
+        public ActionResult Activity(int id)
+        {
+            ActivityDAL dal = new ActivityDAL();
+            var activity = dal.GetActivityById(id);
+            if (activity == null)
+            {
+                return HttpNotFound();
+            }
+            return View(activity);
         }
     }
 }

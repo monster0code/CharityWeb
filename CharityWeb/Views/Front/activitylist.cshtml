@@ -2,7 +2,7 @@
     Layout = null;
 }
 @using Microsoft.AspNet.Identity
-@model IEnumerable<CharityWeb.Models.NursingHome>
+@model IEnumerable<CharityWeb.Models.ActivityModels>
 
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -199,7 +199,7 @@
             text-align: left;
         }
 
-            .card-info .price {
+            .card-info .activityName {
                 color: #ff5722;
                 font-size: 18px;
                 margin-bottom: 10px;
@@ -210,7 +210,8 @@
                 color: #333;
             }
 
-                .card-info p.location {
+                .card-info p.location,
+                p.time {
                     color: #777;
                 }
 
@@ -287,8 +288,8 @@
     </header>
 
     <div class="banner">
-        <h1>Carefully select nursing home</h1>
-        <p>Index > Nursing home</p>
+        <h1>Popular elderly activity</h1>
+        <p>Index > activity</p>
     </div>
 
     <div class="search-filter">
@@ -331,16 +332,16 @@
             </select>
         </div>
         <div>
-            <label>Budget：</label>
+            <label>Time：</label>
             <div class="options" id="budget-options">
                 <span data-value="不限">不限</span>
-                <span data-value="2000元以下">2000元以下</span>
-                <span data-value="2000到3000元">2000到3000元</span>
-                <span data-value="3000到4000元">3000到4000元</span>
-                <span data-value="4000到5000元">4000到5000元</span>
-                <span data-value="5000到7000元">5000到7000元</span>
-                <span data-value="7000到10000元">7000到10000元</span>
-                <span data-value="10000元以上">10000元以上</span>
+                <span data-value="Monday">Monday</span>
+                <span data-value="Tuesday">Tuesday</span>
+                <span data-value="Wednesday">Wednesday</span>
+                <span data-value="Thursday">Thursday</span>
+                <span data-value="Friday">Friday</span>
+                <span data-value="Saturday">Saturday</span>
+                <span data-value="Sunday">Sunday</span>
             </div>
         </div>
         <button onclick="filterResults()">Search</button>
@@ -351,39 +352,45 @@
             Search Result: The <span id="result-count">0</span> information is found for you in "ElderlyCare Hub"<br />
             <span class="highlight" onclick="resetFilters()">Reset</span>
         </div>
-        <h3>List of nursing homes</h3>
+        <h3>List of activities</h3>
         <div class="cards" id="cards-container">
 
-@*            <div class="card" data-region="江苏" data-price="2500">
-                <img src="https://www.qckyly.com/data/upload/202311/20/170134351.png" alt="Card 2">
+@*            <div class="card" data-region="北京" data-time="Thursday">
+                <img src="https://www.qckyly.com/data/upload/202311/20/164001451.png" alt="Card 1">
                 <div class="card-info">
-                    <p class="price">¥2500.00/月起</p>
-                    <p>苏州市相城区尚嘉托老院</p>
-                    <p class="location">住护管理 / 半自理</p>
-                    <p class="location">江苏苏州市</p>
+                    <p class="activityName">太极拳</p>
+                    <p class="location">北京市东城区天坛公园</p>
+                    <p class="time">每周四下午</p>
                 </div>
-                <button class="hover-button"></button>
+            </div>
+            <div class="card" data-region="江苏" data-time="Wednesday evening">
+                <img src="https://www.qckyly.com/data/upload/202311/20/164020201.png" alt="Card 1">
+                <div class="card-info">
+                    <p class="activityName">太极拳</p>
+                    <p class="location">江苏省苏州市时代广场</p>
+                    <p class="time">每周三晚上</p>
+                </div>
             </div>*@
 
             <!-- Add more cards as needed -->
-            @foreach (var home in Model)
-            {
-                <div class="card" data-region="@home.Location" data-price="@home.Price">
-                    <a href="@Url.Action("Detail", "Front", new { id = home.ID })">
-                        <img src="@home.ImageUrl" alt="@home.Name" />
-                    </a>
-                    <div class="card-info">
-                        <p class="price">¥@home.Price/月起</p>
-                        <p>@home.Name</p>
-                        <p class="location">@home.Location</p>
+                @foreach (var home in Model)
+                {
+                    <div class="card" data-region="@home.Location" data-time="@home.Time">
+                        <a href="@Url.Action("Activity", "Front", new { id = home.ID })">
+                            <img src="@home.ImageUrl" alt="@home.Name" />
+                        </a>
+                        <div class="card-info">
+                            <p class="activityName">@home.Name</p>
+                            <p class="location">@home.Location</p>
+                            <p class="time">@home.Time</p>
+                        </div>
                     </div>
-                </div>
-            }
+                }
         </div>
     </div>
 
     <script>
-        // Function to handle click on budget options
+        // Function to handle click on time options
         document.querySelectorAll('#budget-options span').forEach(span => {
             span.addEventListener('click', function () {
                 // Remove 'active' class from all options
@@ -395,16 +402,16 @@
             });
         });
 
-        // Function to filter results based on selected region and budget
+        // Function to filter results based on selected region and time
         function filterResults() {
             const region = document.getElementById('region').value; // Get selected region
-            const budgetSpans = document.querySelectorAll('#budget-options span'); // Get budget options
-            let budget = '不限'; // Default budget is '不限'
+            const timeSpans = document.querySelectorAll('#budget-options span'); // Get time options
+            let time = '不限'; // Default time is '不限'
 
-            // Determine selected budget option
-            budgetSpans.forEach(span => {
+            // Determine selected time option
+            timeSpans.forEach(span => {
                 if (span.classList.contains('active')) {
-                    budget = span.getAttribute('data-value');
+                    time = span.getAttribute('data-value');
                 }
             });
 
@@ -412,14 +419,14 @@
             let count = 0;
             cards.forEach(card => {
                 const cardRegion = card.getAttribute('data-region');
-                const cardPrice = parseFloat(card.getAttribute('data-price'));
+                const cardTime = card.getAttribute('data-time');
 
-                // Check if card matches selected region and budget range
+                // Check if card matches selected region and time
                 let regionMatch = (region === '不限') || cardRegion.startsWith(region);
-                let budgetMatch = checkBudgetMatch(budget, cardPrice);
+                let timeMatch = (time === '不限') || cardTime.startsWith(time);
 
                 // Display or hide the card based on matches
-                if (regionMatch && budgetMatch) {
+                if (regionMatch && timeMatch) {
                     card.style.display = 'block'; // Display the card
                     count++;
                 } else {
@@ -431,38 +438,15 @@
             document.getElementById('result-count').textContent = count;
         }
 
-        // Function to check if card's price matches selected budget range
-        function checkBudgetMatch(selectedBudget, cardPrice) {
-            switch (selectedBudget) {
-                case '不限':
-                    return true;
-                case '2000元以下':
-                    return cardPrice <= 2000;
-                case '2000到3000元':
-                    return cardPrice >= 2000 && cardPrice <= 3000;
-                case '3000到4000元':
-                    return cardPrice >= 3000 && cardPrice <= 4000;
-                case '4000到5000元':
-                    return cardPrice >= 4000 && cardPrice <= 5000;
-                case '5000到7000元':
-                    return cardPrice >= 5000 && cardPrice <= 7000;
-                case '7000到10000元':
-                    return cardPrice >= 7000 && cardPrice <= 10000;
-                case '10000元以上':
-                    return cardPrice >= 10000;
-                default:
-                    return false;
-            }
-        }
-
         // Function to reset filters
         function resetFilters() {
             document.getElementById('region').value = '不限'; // Reset region filter to '不限'
-            document.querySelectorAll('#budget-options span').forEach(s => s.classList.remove('active')); // Remove 'active' class from all budget options
+            document.querySelectorAll('#budget-options span').forEach(s => s.classList.remove('active')); // Remove 'active' class from all time options
             filterResults(); // Apply filters after reset
         }
 
         document.addEventListener('DOMContentLoaded', filterResults); // Apply filters on page load
+
     </script>
     <script src="/Content/static/js/feedbacktest.js"></script>
 </body>

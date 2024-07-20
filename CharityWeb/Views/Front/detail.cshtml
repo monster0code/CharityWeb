@@ -10,13 +10,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>养老院信息</title>
+    <title>nursing home detail</title>
     <link rel="stylesheet" href="/Content/static/css/styles.css">
     <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
+    <script src="https://api.map.baidu.com/api?v=3.0&ak=u4DrOhWuNvTNNLQLWQ0tbNkfMSWtj1zr"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
+        }
+
+        #BaiduMap {
+            width: 800px;
+            height: 500px;
+            margin: 0 auto;
+            /* 使用 margin: 0 auto; 实现水平居中 */
+            border: 1px solid #ccc;
         }
 
         .header {
@@ -189,7 +198,7 @@
             <div class="top-bar">
                 <div class="webname">
                     <img src="~/Content/static/icon/service.png" alt="icon" class="webname-icon">
-                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">Aged Care</a>
+                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
                 </div>
                 <div class="contact">
                     @if (Request.IsAuthenticated)
@@ -218,7 +227,7 @@
         <nav>
             <a href="@Url.Action("index", "Front")">Index</a>
             <a href="@Url.Action("place", "Front")">Nursing home</a>
-            <a href="@Url.Action("activity", "Front")">Activity</a>
+            <a href="@Url.Action("activitylist", "Front")">Activity</a>
             <a href="#">My appointment</a>
         </nav>
     </header>
@@ -245,23 +254,67 @@
                 <button class="registration-button abled">预约</button>
             </div>
         </div>
-        <div class="description">
-            <h2>详细介绍</h2>
-            <div class="introduction">
-                <h3>机构介绍</h3>
-                <p>来海南康养，就要选择最靠谱的康养机构！海南圣享荣岸康养，满足你对海南康养生活的所有美好幻想。</p>
-                <p>椰风海韵 春暖花开</p>
-            </div>
-            <div class="director">
-                <h3>院长风采</h3>
-                <p>院长风采院长风采院长风采院长风采院长风采院长风采院长风采院长风采</p>
-            </div>
-            <div class="news">
-                <h3>热门资讯</h3>
-                <p>查看更多</p>
-            </div>
-        </div>
     </div>
+    <!-- Baidu Map -->
+    <h2 style="text-align: center; margin-top: 50px;">路线规划</h2>
+    <div id="BaiduMap"></div>
+
+    <script>
+        var map = new BMap.Map("BaiduMap");
+        var geolocationControl = new BMap.GeolocationControl();
+        map.addControl(geolocationControl);
+
+        // 初始化地图
+        var point = new BMap.Point(116.331398, 39.897445);
+        map.centerAndZoom(point, 12);
+        map.enableScrollWheelZoom(true);
+
+        // 监听定位成功事件
+        geolocationControl.addEventListener('locationSuccess', function (e) {
+            var currentAddress = ''; // 初始化当前位置的具体地址
+
+            // 获取定位到的当前位置的经纬度坐标
+            var currentPoint = e.point;
+
+            // 创建地理编码实例
+            var geoc = new BMap.Geocoder();
+
+            // 将定位到的坐标转换为具体地址
+            geoc.getLocation(currentPoint, function (rs) {
+                var addComp = rs.addressComponents;
+                currentAddress = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+
+                // 弹出提示框显示当前位置具体地址
+                alert('您的位置：' + currentAddress);
+
+                // 假设目标地址是上海市浦东新区的具体位置（例如：上海市浦东新区张江高科技园区）
+                var targetAddress = "@Model.Location";
+
+                // 使用地理编码服务将目标地址转换为经纬度坐标
+                geoc.getPoint(targetAddress, function (point) {
+                    if (point) {
+                        // 创建路径规划实例
+                        var driving = new BMap.DrivingRoute(map, {
+                            renderOptions: {
+                                map: map,
+                                autoViewport: true
+                            }
+                        });
+
+                        // 执行路径规划
+                        driving.search(currentPoint, point);
+                    } else {
+                        alert('您选择地址没有解析到结果！');
+                    }
+                }, '上海市'); // 指定城市为上海市
+            });
+        });
+
+        // 监听定位失败事件
+        geolocationControl.addEventListener('locationError', function (e) {
+            alert('定位失败：' + e.message);
+        });
+    </script>
     <script src="/Content/static/js/feedbacktest.js"></script>
 </body>
 
