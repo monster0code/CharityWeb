@@ -19,7 +19,7 @@ namespace CharityWeb.DAL
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Activities", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM ActivityModels", conn);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -46,7 +46,7 @@ namespace CharityWeb.DAL
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Activities WHERE ID = @ID", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM ActivityModels WHERE ID = @ID", conn);
                 cmd.Parameters.AddWithValue("@ID", id);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();

@@ -233,8 +233,8 @@
     </header>
 
     <div class="banner">
-        <h1>精心挑选养老机构</h1>
-        <p>首页 > 养老院 > 详情</p>
+        <h1>Nursing home Details</h1>
+        <p>Index > Nursing home > Detail</p>
     </div>
 
     <div class="content">
@@ -242,12 +242,11 @@
             <img src="@Model.ImageUrl" alt="@Model.Name">
             <div class="details-info">
                 <h2>@Model.Name</h2>
-                <p class="price">@Model.Price</p>
+                <p class="price">@Model.Price/month</p>
                 <ul class="features">
-                    <li>可预约</li>
-                    <li><img src="/Content/static/icon/calendar1.png" alt="icon"> 开始时间: 2023-11-20 17:04</li>
-                    <li><img src="/Content/static/icon/calendar2.png" alt="icon"> 结束时间: 无</li>
-                    <li><img src="/Content/static/icon/person.png" alt="icon"> 限制人数: 无</li>
+                    <li>Prices are for reference only</li>
+                    <li><img src="~/Content/static/icon/phone.png" alt="icon"> Phone: 0412345678</li>
+                    <li><img src="/Content/static/icon/person.png" alt="icon"> Max people: unlimited</li>
                     <li><img src="/Content/static/icon/location.png" alt="icon"> @Model.Location</li>
                 </ul>
                 <!-- <a href="#" class="registration-button disabled">已结束</a> -->
@@ -256,7 +255,7 @@
         </div>
     </div>
     <!-- Baidu Map -->
-    <h2 style="text-align: center; margin-top: 50px;">路线规划</h2>
+    <h2 style="text-align: center; margin-top: 50px;">path planning</h2>
     <div id="BaiduMap"></div>
 
     <script>

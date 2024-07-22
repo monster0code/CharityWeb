@@ -1,0 +1,135 @@
+﻿@model IPagedList<CharityWeb.Models.NursingHome>
+@using PagedList
+@using PagedList.Mvc;
+
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .table td, .table th {
+        white-space: nowrap;
+    }
+
+    .table .btn {
+        margin-right: 5px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding-left: 0;
+        list-style: none;
+        border-radius: 0.25rem;
+    }
+
+        .pagination li {
+            display: inline;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #dee2e6;
+            margin-left: -1px;
+        }
+
+        .pagination li a,
+        .pagination li span {
+            color: #007bff;
+            text-decoration: none;
+            background-color: #fff;
+        }
+
+        .pagination li.active span {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+</style>
+
+<h2>All nursing homes</h2>
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Info)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Info)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-sm btn-info" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }, new { @class = "btn btn-sm btn-secondary" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+{
+    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+    DisplayLinkToLastPage = PagedListDisplayMode.Always,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+    DisplayLinkToIndividualPages = true,
+    MaximumPageNumbersToDisplay = 10,
+    DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+    LinkToFirstPageFormat = "首页",
+    LinkToPreviousPageFormat = "«",
+    LinkToIndividualPageFormat = "{0}",
+    LinkToNextPageFormat = "»",
+    LinkToLastPageFormat = "尾页",
+    ContainerDivClasses = new[] { "pagination" },
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = Enumerable.Empty<string>()
+})
+</div>
+
+<div class="text-center mt-3">
+    @using (Html.BeginForm("Index", "NursingHomes", FormMethod.Get))
+    {
+        <label for="pageNumber">页码:</label>
+        <input type="number" id="pageNumber" name="page" min="1" class="form-control d-inline-block w-auto" style="width: 70px;" />
+        <input type="submit" value="跳转" class="btn btn-primary" />
+    }
+</div>
+
+
+

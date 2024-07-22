@@ -29,5 +29,7 @@ namespace CharityWeb.Models
         {
             return new ApplicationDbContext();
         }
+        public DbSet<CharityWeb.Models.NursingHome> NursingHomes { get; set; }
+        public DbSet<CharityWeb.Models.ActivityModels> Activities { get; set; }
     }
 }

@@ -1,0 +1,153 @@
+﻿@model IPagedList<CharityWeb.Models.ActivityModels>
+@using PagedList
+@using PagedList.Mvc
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style>
+    .table td, .table th {
+        white-space: nowrap;
+    }
+
+    .table .btn {
+        margin-right: 5px;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding-left: 0;
+        list-style: none;
+        border-radius: 0.25rem;
+    }
+
+    .pagination li {
+        display: inline;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #dee2e6;
+        margin-left: -1px;
+    }
+
+    .pagination li a,
+    .pagination li span {
+        color: #007bff;
+        text-decoration: none;
+        background-color: #fff;
+    }
+
+    .pagination li.active span {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+    .search-form {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-form input[type="text"] {
+        margin-right: 10px;
+    }
+
+    .search-form input[type="submit"] {
+        margin-right: 10px;
+    }
+
+    .search-form .btn-secondary {
+        margin-left: 0px;
+        margin-top: 3px;
+    }
+</style>
+
+<h2>All activities</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<div class="search-form">
+    @using (Html.BeginForm("Index", "ActivityModels", FormMethod.Get))
+    {
+        <input type="text" name="searchString" value="@ViewBag.CurrentFilter" placeholder="Search by name" class="form-control" style="width: 200px; display: inline-block;" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+    }
+    @using (Html.BeginForm("Index", "ActivityModels", FormMethod.Get))
+    {
+        <input type="submit" value="Reset" class="btn btn-secondary ml-2" />
+    }
+</div>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Time)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Info)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Info)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-sm btn-info" }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }, new { @class = "btn btn-sm btn-secondary" }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-sm btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchString = ViewBag.CurrentFilter }), new PagedListRenderOptions
+{
+    DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+    DisplayLinkToLastPage = PagedListDisplayMode.Always,
+    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+    DisplayLinkToIndividualPages = true,
+    MaximumPageNumbersToDisplay = 2,  // 修正这里的属性名称
+    DisplayEllipsesWhenNotShowingAllPageNumbers = false,
+    LinkToFirstPageFormat = "首页",
+    LinkToPreviousPageFormat = "«",
+    LinkToIndividualPageFormat = "{0}",
+    LinkToNextPageFormat = "»",
+    LinkToLastPageFormat = "尾页",
+    ContainerDivClasses = new[] { "pagination" },
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = Enumerable.Empty<string>()
+})
+</div>

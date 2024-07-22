@@ -186,31 +186,34 @@ document.addEventListener('DOMContentLoaded', function () {
         var rating = document.querySelector('input[name="rating"]:checked').value;
         var feedbackText = document.getElementById("feedbackText").value;
 
-        // 假设这里有一个获取当前用户信息的函数
-        var currentUser = getCurrentUser();
-
         var feedbackData = {
-            user: currentUser,
-            rating: rating,
-            feedback: feedbackText
+            Rating: parseInt(rating),
+            FeedbackText: feedbackText
         };
 
+        console.log(feedbackData);
+
         // 使用fetch发送AJAX请求到后端
-        fetch('/api/feedback', {
+        fetch('/Feedback/SubmitFeedback', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('[name=__RequestVerificationToken]').value
             },
             body: JSON.stringify(feedbackData)
         })
-            .then(response => response.json())
+        .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                closeFeedbackModal();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                if (data.success) {
+                    console.log('Success:', data);
+                    closeFeedbackModal();
+                } else {
+                    console.error('Error:', data.errors);
+                }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
 
     function getCurrentUser() {
