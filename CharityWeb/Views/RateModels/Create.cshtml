@@ -1,0 +1,262 @@
+﻿@model CharityWeb.Models.RateModels
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style>
+    /* Your previously provided CSS styles */
+    .feedback-modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        padding-top: 60px;
+    }
+
+    .feedback-modal-content {
+        background-color: #fff;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 30%;
+        box-shadow: 0 0 10px rgba(0,0,0,0.25);
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .feedback-modal-close {
+        color: #aaa;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .feedback-modal-close:hover,
+        .feedback-modal-close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+    .feedback-rating {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+        .feedback-rating input {
+            display: none;
+        }
+
+        .feedback-rating label {
+            font-size: 18px;
+            cursor: pointer;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+            text-align: center;
+            margin: 0;
+        }
+
+        .feedback-rating input:checked + label {
+            background-color: orange;
+            color: white;
+            border-color: orange;
+        }
+
+    .feedback-textarea {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+    }
+
+    .feedback-button-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 100px;
+        height: 40px;
+        border: none;
+        background-color: orange;
+        color: white;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .btn-submit {
+        background-color: #FFA500; /* 橙色背景 */
+        color: white; /* 白色文字 */
+        border: none; /* 去掉边框 */
+        padding: 10px 20px; /* 内边距 */
+        font-size: 16px; /* 字体大小 */
+        cursor: pointer; /* 鼠标指针 */
+    }
+
+        .btn-submit:hover {
+            background-color: #e69500; /* 悬停时背景颜色变深 */
+        }
+
+    .btn-cancel {
+        background-color: #d3d3d3; /* 灰色背景 */
+        color: black; /* 黑色文字 */
+        border: none; /* 去掉边框 */
+        padding: 10px 20px; /* 内边距 */
+        font-size: 16px; /* 字体大小 */
+        cursor: pointer; /* 鼠标指针 */
+    }
+
+        .btn-cancel:hover {
+            background-color: #c0c0c0; /* 悬停时背景颜色变深 */
+        }
+</style>
+
+<h2>Create</h2>
+
+@*
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>RateModels</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Feedback, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Feedback, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Feedback, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SubmittedUser, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SubmittedUser, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SubmittedUser, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+*@
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="feedback-button-container" id="feedbackButton">
+        Feedback
+    </div>
+
+    <div id="feedback-modal" class="feedback-modal">
+        <div class="feedback-modal-content">
+            <span class="feedback-modal-close">&times;</span>
+            <h4>Feedback</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="feedback-rating">
+                        @for (int i = 1; i <= 9; i++)
+                        {
+                            <input type="radio" id="rate@(i)" name="Rating" value="@i">
+                            <label for="rate@(i)">@i</label>
+                        }
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Feedback, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Feedback, new { htmlAttributes = new { @class = "form-control feedback-textarea" } })
+                    @Html.ValidationMessageFor(model => model.Feedback, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SubmittedUser, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @* 使用隐藏字段保存用户名，显示文本框只做显示 *@
+                    @Html.HiddenFor(model => model.SubmittedUser, new { @Value = User.Identity.GetUserName() })
+                    <input type="text" class="form-control" value="@User.Identity.GetUserName()" readonly />
+                    @Html.ValidationMessageFor(model => model.SubmittedUser, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Submit" class="btn btn-submit" />
+                    <button type="button" class="btn btn-cancel" onclick="closeFeedbackModal()">Cancel</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+}
+
+
+<script>
+    var feedbackModal = document.getElementById("feedback-modal");
+    var feedbackBtn = document.getElementById("feedbackButton");
+    var feedbackSpan = document.getElementsByClassName("feedback-modal-close")[0];
+
+    feedbackBtn.onclick = function () {
+        feedbackModal.style.display = "block";
+    }
+
+    feedbackSpan.onclick = function () {
+        feedbackModal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == feedbackModal) {
+            feedbackModal.style.display = "none";
+        }
+    }
+
+    function closeFeedbackModal() {
+        feedbackModal.style.display = "none";
+    }
+</script>

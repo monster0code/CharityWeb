@@ -1,0 +1,102 @@
+﻿@model IEnumerable<CharityWeb.Models.RateModels>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<style>
+    .table td, .table th {
+        white-space: nowrap;
+    }
+
+    .table .btn {
+        margin-right: 5px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding-left: 0;
+        list-style: none;
+        border-radius: 0.25rem;
+    }
+
+        .pagination li {
+            display: inline;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #dee2e6;
+            margin-left: -1px;
+        }
+
+            .pagination li a,
+            .pagination li span {
+                color: #007bff;
+                text-decoration: none;
+                background-color: #fff;
+            }
+
+            .pagination li.active span {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
+    .export-button-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .export-button {
+        position: absolute;
+        right: 365px;
+    }
+</style>
+
+<h2>User Feedback List</h2>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Feedback)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubmittedUser)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Feedback)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubmittedUser)
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<!-- 显示平均评分 -->
+<div style="margin-top: 20px;">
+    <p>Average Rating: @ViewData["AverageRating"]</p>
+</div>
+
+<form action="https://www.google.com/search" method="get" target="_blank">
+    <div>
+        <input type="hidden" name="cx" value="daf45ee6c91f73e725144d17a74c85cac160f1e6d61cc7d2b1dbeba3be27aa01">
+        <input type="hidden" name="ie" value="UTF-8">
+        <input type="text" name="q" size="30" placeholder="Search...">
+        <input type="submit" value="Search">
+    </div>
+</form>

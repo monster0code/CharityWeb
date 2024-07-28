@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using static CharityWeb.Models.RateModels;
 
 namespace CharityWeb.Models
 {
@@ -31,5 +32,6 @@ namespace CharityWeb.Models
         }
         public DbSet<CharityWeb.Models.NursingHome> NursingHomes { get; set; }
         public DbSet<CharityWeb.Models.ActivityModels> Activities { get; set; }
+        public DbSet<CharityWeb.Models.RateModels> Rate { get; set; }
     }
 }

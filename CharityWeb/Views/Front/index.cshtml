@@ -3,6 +3,12 @@
 }
 @using Microsoft.AspNet.Identity
 @model IEnumerable<CharityWeb.Models.NursingHome>
+@using Newtonsoft.Json
+@{
+    var locationData = ViewBag.LocationData as List<dynamic>;
+}
+
+
 
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -39,8 +45,21 @@
             .more_card:hover {
                 background-color: #45a049;
             }
+
+        #baidu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        #chart-container {
+            width: 800px;
+            height: 600px;
+        }
     </style>
     <script src="https://api.map.baidu.com/api?v=3.0&ak=u4DrOhWuNvTNNLQLWQ0tbNkfMSWtj1zr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </head>
 
 <body>
@@ -92,19 +111,19 @@
                     <div class="play-button" onclick="playVideo(1)">
                         <img src="/Content//static/pic/play-button.png" alt="Play">
                     </div>
-                    <img src="/Content//static/pic/130259191.jpg" alt="Image 1">
+                    <img src="~/Content/static/pic/istockphoto-1250502440-1024x1024.jpg" alt="Image 1">
                 </div>
                 <div class="slide" data-video="https://www.youtube.com/embed/9U0N7-xDx-0">
                     <div class="play-button" onclick="playVideo(2)">
-                        <img src="/Content//static/pic/play-button.png" alt="Play">
+                        <img src="/Content/static/pic/play-button.png" alt="Play">
                     </div>
-                    <img src="/Content//static/pic/130240401.jpg" alt="Image 2">
+                    <img src="~/Content/static/pic/istockphoto-1250502444-1024x1024.jpg" alt="Image 2">
                 </div>
                 <div class="slide" data-video="https://www.youtube.com/embed/_4e4Ood1Ss8">
                     <div class="play-button" onclick="playVideo(3)">
                         <img src="/Content//static/pic/play-button.png" alt="Play">
                     </div>
-                    <img src="/Content//static/pic/095824411.png" alt="Image 3">
+                    <img src="~/Content/static/pic/istockphoto-1149429891-1024x1024.jpg" alt="Image 3">
                 </div>
                 <!-- Navigation Arrows -->
                 <a class="prev" onclick="moveSlide(-1)">&#10094;</a>
@@ -124,7 +143,7 @@
             <p>Nursing homes across the country</p>
             <div class="cards">
                 <!-- Add more cards as needed -->
-                @foreach (var home in Model)
+                @foreach (var home in Model.Take(8))
                 {
                     <div class="card">
                         <a href="@Url.Action("Detail", "Front", new { id = home.ID })">
@@ -150,8 +169,14 @@
         </div>
     </div>
     <button class="more_card" onclick="window.location.href='/Front/place'">More</button>
-    <!-- Baidu Map -->
+
     <h2 style="text-align: center; margin-top: 50px;">National nursing home map</h2>
+    <div id="baidu-container">
+        <div id="chart-container"></div>
+    </div>
+
+    <!-- Baidu Map -->
+    <h2 style="text-align: center;">National nursing home map</h2>
     <div id="BaiduMap"></div>
 
     <!-- <button class="feedback-button">Feedback</button> -->
@@ -159,129 +184,186 @@
         Feedback
     </div> -->
     <script src="/Content/static/js/feedbacktest.js"></script>
-</body>
 
-<script>
-    let slideIndex = 1;
-    let slideInterval;
+    <script>
+        let slideIndex = 1;
+        let slideInterval;
 
-    function initSlider() {
-        showSlides(slideIndex);
-        slideInterval = setInterval(function () {
-            showSlides(slideIndex += 1);
-        }, 3000); // Change image every 3 seconds
-    }
-
-    function moveSlide(n) {
-        clearInterval(slideInterval);
-        showSlides(slideIndex += n);
-        slideInterval = setInterval(function () {
-            showSlides(slideIndex += 1);
-        }, 3000); // Restart interval
-    }
-
-    function currentSlide(n) {
-        clearInterval(slideInterval);
-        showSlides(slideIndex = n);
-        slideInterval = setInterval(function () {
-            showSlides(slideIndex += 1);
-        }, 3000); // Restart interval
-    }
-
-    function showSlides(n) {
-        let i;
-        const slides = document.getElementsByClassName("slide");
-        const dots = document.getElementsByClassName("dot");
-        if (n > slides.length) { slideIndex = 1 }
-        if (n < 1) { slideIndex = slides.length }
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
+        function initSlider() {
+            showSlides(slideIndex);
+            slideInterval = setInterval(function () {
+                showSlides(slideIndex += 1);
+            }, 3000); // Change image every 3 seconds
         }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
+
+        function moveSlide(n) {
+            clearInterval(slideInterval);
+            showSlides(slideIndex += n);
+            slideInterval = setInterval(function () {
+                showSlides(slideIndex += 1);
+            }, 3000); // Restart interval
         }
-        slides[slideIndex - 1].style.display = "block";
-        dots[slideIndex - 1].className += " active";
-    }
 
-    // Function to play video
-    function playVideo(index) {
-        const videoUrl = document.getElementsByClassName("slide")[index - 1].getAttribute('data-video');
-        openModal(videoUrl);
-    }
+        function currentSlide(n) {
+            clearInterval(slideInterval);
+            showSlides(slideIndex = n);
+            slideInterval = setInterval(function () {
+                showSlides(slideIndex += 1);
+            }, 3000); // Restart interval
+        }
 
-    // Add modal functionality to open videos
-    function openModal(videoUrl) {
-        const iframe = document.getElementById("youtube-video");
-        const modal = document.getElementById("videoModal");
-        iframe.src = videoUrl;
-        modal.style.display = "flex";
-    }
-
-    function closeModal() {
-        const modal = document.getElementById("videoModal");
-        const iframe = document.getElementById("youtube-video");
-        iframe.src = "";
-        modal.style.display = "none";
-    }
-
-    function showArrows() {
-        document.querySelector('.prev').style.opacity = 1;
-        document.querySelector('.next').style.opacity = 1;
-    }
-
-    function hideArrows() {
-        document.querySelector('.prev').style.opacity = 0;
-        document.querySelector('.next').style.opacity = 0;
-    }
-
-    // Initialize the slider when the page loads
-    window.onload = function () {
-        initSlider();
-    };
-
-
-    // 初始化地图
-    var map = new BMap.Map("BaiduMap");
-    var point = new BMap.Point(116.331398, 39.897445);
-    map.centerAndZoom(point, 12);
-    map.enableScrollWheelZoom(true)
-
-    // 标注函数
-    function addMarker(price, location, imgUrl) {
-        var myGeo = new BMap.Geocoder();
-        myGeo.getPoint(location, function (point) {
-            if (point) {
-                var marker = new BMap.Marker(point, 12);
-                map.addOverlay(marker);
-                var infoWindow = new BMap.InfoWindow(`<div style="width:200px;overflow:hidden;"><img src="${imgUrl}" style="width:100%;height:auto;margin-bottom:10px;" /><p>${price}</p><p>${location}</p>`);
-                marker.addEventListener("click", function () {
-                    this.openInfoWindow(infoWindow);
-                });
-            } else {
-                alert("地址解析失败，请检查地址：" + location);
+        function showSlides(n) {
+            let i;
+            const slides = document.getElementsByClassName("slide");
+            const dots = document.getElementsByClassName("dot");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
             }
-        }, "北京市");
-    }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+        }
 
-    // 获取所有卡片元素
-    var cards = document.getElementsByClassName("card");
+        // Function to play video
+        function playVideo(index) {
+            const videoUrl = document.getElementsByClassName("slide")[index - 1].getAttribute('data-video');
+            openModal(videoUrl);
+        }
 
-    // 遍历每个卡片，添加事件监听
-    Array.prototype.forEach.call(cards, function (card) {
-        var price = card.querySelector(".price").textContent;
-        var location = card.querySelector(".location").textContent;
-        var imgUrl = card.querySelector("img").getAttribute("src");
+        // Add modal functionality to open videos
+        function openModal(videoUrl) {
+            const iframe = document.getElementById("youtube-video");
+            const modal = document.getElementById("videoModal");
+            iframe.src = videoUrl;
+            modal.style.display = "flex";
+        }
 
-        addMarker(price, location, imgUrl);
+        function closeModal() {
+            const modal = document.getElementById("videoModal");
+            const iframe = document.getElementById("youtube-video");
+            iframe.src = "";
+            modal.style.display = "none";
+        }
 
-        // 点击按钮时显示对应的地图位置
-        // TODO
-        // card.querySelector(".hover-button").addEventListener("click", function () {
-        //     addMarker(price, location);
-        // });
-    });
+        function showArrows() {
+            document.querySelector('.prev').style.opacity = 1;
+            document.querySelector('.next').style.opacity = 1;
+        }
 
-</script>
+        function hideArrows() {
+            document.querySelector('.prev').style.opacity = 0;
+            document.querySelector('.next').style.opacity = 0;
+        }
 
+        // Initialize the slider when the page loads
+        window.onload = function () {
+            initSlider();
+        };
+
+
+        // 初始化地图
+        var map = new BMap.Map("BaiduMap");
+        var point = new BMap.Point(116.331398, 39.897445);
+        map.centerAndZoom(point, 12);
+        map.enableScrollWheelZoom(true)
+
+        // 标注函数
+        function addMarker(price, location, imgUrl) {
+            var myGeo = new BMap.Geocoder();
+            myGeo.getPoint(location, function (point) {
+                if (point) {
+                    var marker = new BMap.Marker(point, 12);
+                    map.addOverlay(marker);
+                    var infoWindow = new BMap.InfoWindow(`<div style="width:200px;overflow:hidden;"><img src="${imgUrl}" style="width:100%;height:auto;margin-bottom:10px;" /><p>${price}</p><p>${location}</p>`);
+                    marker.addEventListener("click", function () {
+                        this.openInfoWindow(infoWindow);
+                    });
+                } else {
+                    alert("地址解析失败，请检查地址：" + location);
+                }
+            }, "北京市");
+        }
+
+        // 获取所有卡片元素
+        var cards = document.getElementsByClassName("card");
+
+        // 遍历每个卡片，添加事件监听
+        Array.prototype.forEach.call(cards, function (card) {
+            var price = card.querySelector(".price").textContent;
+            var location = card.querySelector(".location").textContent;
+            var imgUrl = card.querySelector("img").getAttribute("src");
+
+            addMarker(price, location, imgUrl);
+
+            // 点击按钮时显示对应的地图位置
+            // TODO
+            // card.querySelector(".hover-button").addEventListener("click", function () {
+            //     addMarker(price, location);
+            // });
+        });
+
+    </script>
+
+    <script>
+        // Initialize echarts instance
+        var myChart = echarts.init(document.getElementById('chart-container'));
+
+        // Data from the controller (serialize the model to JSON)
+        var data = @Html.Raw(Json.Encode(Model));
+
+        // Process data to get the first three characters of each location and aggregate counts
+        var processedData = {};
+        data.forEach(function (item) {
+            var province = item.Location.substring(0, 3);
+            if (!processedData[province]) {
+                processedData[province] = 0;
+            }
+            processedData[province] += 1; // Assuming count is 1 for each nursing home entry
+        });
+
+        var pieData = [];
+        for (var province in processedData) {
+            pieData.push({ value: processedData[province], name: province });
+        }
+
+        // Option for the pie chart
+        var option = {
+            title: {
+                text: 'Distribution of nursing homes by province',
+                subtext: 'Local MS SQL',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+            },
+            series: [
+                {
+                    name: 'Referer',
+                    type: 'pie',
+                    radius: '50%',
+                    data: pieData,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        // Use the specified chart configuration item and data to show chart
+        myChart.setOption(option);
+    </script>
+
+</body>
 </html>

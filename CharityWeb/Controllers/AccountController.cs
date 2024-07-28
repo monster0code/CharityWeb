@@ -83,7 +83,7 @@ namespace CharityWeb.Controllers
                     // 判断特定的管理员账号，如果是管理员账号则重定向到 AdminDashboard，否则重定向到 UserDashboard
                     if (IsAdminUser(model.Email))
                     {
-                        return RedirectToLocal(returnUrl);
+                        return RedirectToLocal("~/NursingHomes");
                     }
                     else
                     {

@@ -46,16 +46,49 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=7.2.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.7.2.1\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=6.1.1.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.0\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -105,9 +138,6 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -193,6 +223,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NursingHomesController.cs" />
+    <Compile Include="Controllers\RateModelsController.cs" />
     <Compile Include="DAL\ActivityDAL.cs" />
     <Compile Include="DAL\NursingHomeDAL.cs" />
     <Compile Include="Global.asax.cs">
@@ -210,12 +241,17 @@
     <Compile Include="Migrations\202407221434078_InitialCreateActivity.designer.cs">
       <DependentUpon>202407221434078_InitialCreateActivity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202407271548196_InitialCreateRateModels.cs" />
+    <Compile Include="Migrations\202407271548196_InitialCreateRateModels.designer.cs">
+      <DependentUpon>202407271548196_InitialCreateRateModels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActivityModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\NursingHome.cs" />
+    <Compile Include="Models\RateModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -256,8 +292,15 @@
     <Content Include="Content\static\pic\130240401.jpg" />
     <Content Include="Content\static\pic\130259191.jpg" />
     <Content Include="Content\static\pic\170333121.png" />
+    <Content Include="Content\static\pic\accompanying-the-elderlyjpg.jpg" />
     <Content Include="Content\static\pic\Best-Elderly-Care-Singapore-Review.jpg" />
+    <Content Include="Content\static\pic\istockphoto-1149429891-1024x1024.jpg" />
+    <Content Include="Content\static\pic\istockphoto-1250502440-1024x1024.jpg" />
+    <Content Include="Content\static\pic\istockphoto-1250502444-1024x1024.jpg" />
+    <Content Include="Content\static\pic\istockphoto-1309101859-1024x1024.jpg" />
+    <Content Include="Content\static\pic\istockphoto-977762724-1024x1024.jpg" />
     <Content Include="Content\static\pic\Jeff-SL-Homepage-Image-1024x576.png" />
+    <Content Include="Content\static\pic\painted-care-1.jpg" />
     <Content Include="Content\static\pic\play-button.png" />
     <Content Include="Content\static\pic\seniorliving-desktop.png" />
     <Content Include="Content\static\plugins\bootstrap-3.4.1\css\bootstrap-theme.css" />
@@ -383,6 +426,11 @@
     <Content Include="Views\ActivityModels\Details.cshtml" />
     <Content Include="Views\ActivityModels\Edit.cshtml" />
     <Content Include="Views\ActivityModels\Index.cshtml" />
+    <Content Include="Views\RateModels\Create.cshtml" />
+    <Content Include="Views\RateModels\Delete.cshtml" />
+    <Content Include="Views\RateModels\Details.cshtml" />
+    <Content Include="Views\RateModels\Edit.cshtml" />
+    <Content Include="Views\RateModels\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -423,6 +471,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202407221434078_InitialCreateActivity.resx">
       <DependentUpon>202407221434078_InitialCreateActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202407271548196_InitialCreateRateModels.resx">
+      <DependentUpon>202407271548196_InitialCreateRateModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

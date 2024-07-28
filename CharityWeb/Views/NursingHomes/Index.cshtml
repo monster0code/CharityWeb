@@ -43,11 +43,21 @@
             color: white;
             border-color: #007bff;
         }
+    .export-button-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .export-button {
+        position: absolute;
+        right: 365px;
+    }
 </style>
 
 <h2>All nursing homes</h2>
-<p>
+<p class="export-button-container">
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Export to Excel", "ExportToExcel", null, new { @class = "btn btn-success export-button" })
 </p>
 
 
@@ -111,11 +121,11 @@
     DisplayLinkToIndividualPages = true,
     MaximumPageNumbersToDisplay = 10,
     DisplayEllipsesWhenNotShowingAllPageNumbers = false,
-    LinkToFirstPageFormat = "首页",
+    LinkToFirstPageFormat = "Index",
     LinkToPreviousPageFormat = "«",
     LinkToIndividualPageFormat = "{0}",
     LinkToNextPageFormat = "»",
-    LinkToLastPageFormat = "尾页",
+    LinkToLastPageFormat = "End",
     ContainerDivClasses = new[] { "pagination" },
     UlElementClasses = new[] { "pagination" },
     LiElementClasses = Enumerable.Empty<string>()

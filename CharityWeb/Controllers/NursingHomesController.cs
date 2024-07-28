@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using CharityWeb.Models;
+using OfficeOpenXml;
 using PagedList;
 
 namespace CharityWeb.Controllers
@@ -21,7 +23,7 @@ namespace CharityWeb.Controllers
         {
             var nursingHomes = db.NursingHomes.OrderBy(a => a.Name).ToList();
 
-            int pageSize = 2; // 每页显示的数据量
+            int pageSize = 10; // 每页显示的数据量
             int pageNumber = (page ?? 1); // 当前页码
             return View(nursingHomes.OrderBy(n => n.Name).ToPagedList(pageNumber, pageSize));
         }
@@ -127,6 +129,47 @@ namespace CharityWeb.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// ExportToExcel
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ExportToExcel()
+        {
+            var nursingHomes = db.NursingHomes.ToList(); // 获取所有数据
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("NursingHomes");
+
+                // 添加表头
+                worksheet.Cells[1, 1].Value = "Name";
+                worksheet.Cells[1, 2].Value = "Location";
+                worksheet.Cells[1, 3].Value = "Price";
+                worksheet.Cells[1, 4].Value = "ImageUrl";
+                worksheet.Cells[1, 5].Value = "Info";
+
+                // 添加数据
+                for (int i = 0; i < nursingHomes.Count; i++)
+                {
+                    worksheet.Cells[i + 2, 1].Value = nursingHomes[i].Name;
+                    worksheet.Cells[i + 2, 2].Value = nursingHomes[i].Location;
+                    worksheet.Cells[i + 2, 3].Value = nursingHomes[i].Price;
+                    worksheet.Cells[i + 2, 4].Value = nursingHomes[i].ImageUrl;
+                    worksheet.Cells[i + 2, 5].Value = nursingHomes[i].Info;
+                }
+
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+
+                var content = stream.ToArray();
+                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "NursingHomes.xlsx");
+            }
         }
     }
 }
