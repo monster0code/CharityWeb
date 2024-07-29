@@ -13,6 +13,8 @@
     <title>elderly activity</title>
     <link rel="stylesheet" href="/Content/static/css/styles.css">
     <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -238,7 +240,7 @@
             <a href="@Url.Action("index", "Front")">Index</a>
             <a href="@Url.Action("place", "Front")">Nursing home</a>
             <a href="@Url.Action("activitylist", "Front")">Activity</a>
-            <a href="#">My appointment</a>
+            <a href="@Url.Action("Index", "NursingAppointmentModels")">My appointment</a>
         </nav>
     </header>
 
@@ -249,17 +251,17 @@
 
     <div class="content">
         <div class="details">
-            <img src="/Content/static/pic/170333121.png" alt="@Model.Name">
+            <img src="@Model.ImageUrl" alt="@Model.Name">
             <div class="details-info">
                 <h2>@Model.Name</h2>
                 <p class="price">¥ 0.00</p>
                 <ul class="features">
-                    <li><img src="/Content/static/icon/calendar1.png" alt="icon"> time: @Model.Time</li>
+                    <li><img src="/Content/static/icon/calendar1.png" alt="icon"> Time: @Model.Time</li>
                     <li><img src="/Content/static/icon/person.png" alt="icon"> Max people: unlimited</li>
-                    <li><img src="/Content/static/icon/location.png" alt="icon"> location: @Model.Location</li>
+                    <li><img src="/Content/static/icon/location.png" alt="icon"> Location: @Model.Location</li>
                 </ul>
                 <!-- <a href="#" class="registration-button disabled">已结束</a> -->
-                <button class="registration-button abled">sign up</button>
+                <button class="registration-button abled" onclick="google_ai()">AI</button>
             </div>
         </div>
         <div class="description">
@@ -268,8 +270,35 @@
                 <h3>Activity introduction</h3>
                 <p>@Model.Info</p>
             </div>
-    </div>
-    <script src="/Content/static/js/feedbacktest.js"></script>
+        </div>
+
+        <div class="description" style="margin-top: 6px;">
+                <h2>AI introduction</h2>
+                <div id="ai-text"></div>
+            </div>
+        </div>
+
+        <script>
+            function google_ai() {
+                var inputText = "please introduce @Model.Name";
+
+                $.ajax({
+                    url: '/Front/AIprocessAsync', // 后端控制器的处理方法路由
+                    method: 'POST', // 或者 'GET', 根据后端接口要求
+                    dataType: 'json', // 如果后端返回JSON数据
+                    data: { text: inputText }, // 向后端发送的数据
+                    success: function (response) {
+                        /*$('#ai-text').text(response.res);*/
+                        const divElement = document.getElementById('ai-text');
+                        divElement.innerHTML = response.htmlContent;
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('error:', error);
+                    }
+                });
+            }
+        </script>
+
 </body>
 
 </html>

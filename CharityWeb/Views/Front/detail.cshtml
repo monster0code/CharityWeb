@@ -12,6 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nursing home detail</title>
     <link rel="stylesheet" href="/Content/static/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous">
+    </script>
     <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
     <script src="https://api.map.baidu.com/api?v=3.0&ak=u4DrOhWuNvTNNLQLWQ0tbNkfMSWtj1zr"></script>
     <style>
@@ -189,6 +193,112 @@
             .registration-button:hover {
                 background-color: #45a049;
             }
+
+
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .feedback-modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.25);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .feedback-modal-close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .feedback-modal-close:hover,
+            .feedback-modal-close:focus {
+                color: black;
+                text-decoration: none;
+            }
+
+        /* 表单组样式 */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="date"] {
+                width: calc(100% - 20px); /* 留出 padding 的空间 */
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box; /* 包含 padding 和 border 在内的总宽度 */
+            }
+
+        .feedback-button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 40px;
+            border: none;
+            background-color: orange;
+            color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .btn-submit {
+            background-color: #FFA500; /* 橙色背景 */
+            color: white; /* 白色文字 */
+            border: none; /* 去掉边框 */
+            padding: 10px 20px; /* 内边距 */
+            font-size: 16px; /* 字体大小 */
+            cursor: pointer; /* 鼠标指针 */
+        }
+
+            .btn-submit:hover {
+                background-color: #e69500; /* 悬停时背景颜色变深 */
+            }
+
+        .btn-cancel {
+            background-color: #d3d3d3; /* 灰色背景 */
+            color: black; /* 黑色文字 */
+            border: none; /* 去掉边框 */
+            padding: 10px 20px; /* 内边距 */
+            font-size: 16px; /* 字体大小 */
+            cursor: pointer; /* 鼠标指针 */
+        }
+
+            .btn-cancel:hover {
+                background-color: #c0c0c0; /* 悬停时背景颜色变深 */
+            }
     </style>
 </head>
 
@@ -228,7 +338,7 @@
             <a href="@Url.Action("index", "Front")">Index</a>
             <a href="@Url.Action("place", "Front")">Nursing home</a>
             <a href="@Url.Action("activitylist", "Front")">Activity</a>
-            <a href="#">My appointment</a>
+            <a href="@Url.Action("Index", "NursingAppointmentModels")">My appointment</a>
         </nav>
     </header>
 
@@ -250,7 +360,7 @@
                     <li><img src="/Content/static/icon/location.png" alt="icon"> @Model.Location</li>
                 </ul>
                 <!-- <a href="#" class="registration-button disabled">已结束</a> -->
-                <button class="registration-button abled">预约</button>
+                <button class="registration-button abled" id="feedbackButton">预约</button>
             </div>
         </div>
     </div>
@@ -314,7 +424,144 @@
             alert('定位失败：' + e.message);
         });
     </script>
-    <script src="/Content/static/js/feedbacktest.js"></script>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div id="feedback-modal" class="feedback-modal">
+            <div class="feedback-modal-content">
+                <span class="feedback-modal-close">&times;</span>
+                <h4>Select an appointment time</h4>
+                <hr />
+
+                <div class="form-group">
+                    <label for="activity">Select Nursing home ID:</label>
+                    <input type="text" id="activity" value="@Model.ID" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="Username">Your Username:</label>
+                    <input type="text" id="Username" value="@User.Identity.GetUserName()" readonly>
+                </div>
+
+                @*                <div class="form-group">
+                        <input type="date" id="appointment-date" value="2024-07-28">
+                    </div>*@
+                <!-- 日期选择器 -->
+                <div class="form-group">
+                    <label for="appointment-date">Select Appointment Date:</label>
+                    <input type="text" id="appointment-date" name="Date">
+                </div>
+
+                <div class="form-group" style="margin-top: 20px">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Submit" class="btn btn-submit" onclick="MakeAppointment()" />
+                        <button type="button" class="btn btn-cancel" onclick="closeFeedbackModal()">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <script>
+    $(document).ready(function() {
+        var activityId = "@Model.ID";
+
+        // 使用 AJAX 请求获取当前用户已预约的日期列表
+        $.ajax({
+            url: "/NursingAppointmentModels/GetUserAppointments",
+            type: "GET",
+            data: { activityId: activityId },
+            success: function(response) {
+                var reservedDates = response;
+
+                // 初始化日期选择器
+                $("#appointment-date").datepicker({
+                    dateFormat: "yy-mm-dd",
+                    beforeShowDay: function(date) {
+                        var stringDate = $.datepicker.formatDate("yy-mm-dd", date);
+                        return [reservedDates.indexOf(stringDate) === -1];
+                    }
+                });
+            },
+            error: function(error) {
+                console.log("Error fetching user appointments:", error);
+            }
+        });
+    });
+    </script>
+
+    <script>
+
+        var feedbackModal = document.getElementById("feedback-modal");
+        var feedbackBtn = document.getElementById("feedbackButton");
+        var feedbackSpan = document.getElementsByClassName("feedback-modal-close")[0];
+
+        feedbackBtn.onclick = function () {
+            feedbackModal.style.display = "block";
+        }
+
+        feedbackSpan.onclick = function () {
+            feedbackModal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == feedbackModal) {
+                feedbackModal.style.display = "none";
+            }
+        }
+
+        function closeFeedbackModal() {
+            feedbackModal.style.display = "none";
+        }
+
+        function MakeAppointment() {
+
+            // Get the data from the input field.
+            const HomeId = document.getElementById("activity").value;
+            const UserName = document.getElementById("Username").value;
+            const AppointmentDate = document.getElementById("appointment-date").value;
+
+            // 检查是否选择了日期
+            if (!AppointmentDate) {
+                alert("Please select an appointment date.");
+                return;
+            }
+
+            var data = {
+                UserName: UserName,
+                HomeId: HomeId,
+                Date: AppointmentDate
+            };
+
+            // Make a POST request to the controller action with the data.
+            $.ajax({
+                url: "/NursingAppointmentModels/CreateAppointment",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                success: function (response) {
+                    // Handle the response from the server
+                    if (response = "Success") {
+                        alert("UserName[" + UserName + "] had made an appointment on " + AppointmentDate + " for " + "HomeId[" + HomeId + "].");
+                    }
+                    else {
+                        alert(response.statusText);
+                    }
+                },
+                error: function (error) {
+                    // Handle any errors from the server.
+                    alert(error.statusText);
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

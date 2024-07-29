@@ -283,7 +283,7 @@
             <a href="@Url.Action("index", "Front")">Index</a>
             <a href="@Url.Action("place", "Front")">Nursing home</a>
             <a href="@Url.Action("activitylist", "Front")">Activity</a>
-            <a href="#">My appointment</a>
+            <a href="@Url.Action("Index", "NursingAppointmentModels")">My appointment</a>
         </nav>
     </header>
 
@@ -297,7 +297,7 @@
         <div>
             <label for="region">Region：</label>
             <select id="region">
-                <option value="不限">Select</option>
+                <option value="unlimited">Select</option>
                 <option value="北京">北京</option>
                 <option value="上海">上海</option>
                 <option value="天津">天津</option>
@@ -334,7 +334,7 @@
         <div>
             <label>Time：</label>
             <div class="options" id="budget-options">
-                <span data-value="不限">不限</span>
+                <span data-value="unlimited">unlimited</span>
                 <span data-value="Monday">Monday</span>
                 <span data-value="Tuesday">Tuesday</span>
                 <span data-value="Wednesday">Wednesday</span>
@@ -406,7 +406,7 @@
         function filterResults() {
             const region = document.getElementById('region').value; // Get selected region
             const timeSpans = document.querySelectorAll('#budget-options span'); // Get time options
-            let time = '不限'; // Default time is '不限'
+            let time = 'unlimited'; // Default time is '不限'
 
             // Determine selected time option
             timeSpans.forEach(span => {
@@ -422,8 +422,8 @@
                 const cardTime = card.getAttribute('data-time');
 
                 // Check if card matches selected region and time
-                let regionMatch = (region === '不限') || cardRegion.startsWith(region);
-                let timeMatch = (time === '不限') || cardTime.startsWith(time);
+                let regionMatch = (region === 'unlimited') || cardRegion.startsWith(region);
+                let timeMatch = (time === 'unlimited') || cardTime.startsWith(time);
 
                 // Display or hide the card based on matches
                 if (regionMatch && timeMatch) {
@@ -440,7 +440,7 @@
 
         // Function to reset filters
         function resetFilters() {
-            document.getElementById('region').value = '不限'; // Reset region filter to '不限'
+            document.getElementById('region').value = 'unlimited'; // Reset region filter to '不限'
             document.querySelectorAll('#budget-options span').forEach(s => s.classList.remove('active')); // Remove 'active' class from all time options
             filterResults(); // Apply filters after reset
         }
@@ -448,7 +448,6 @@
         document.addEventListener('DOMContentLoaded', filterResults); // Apply filters on page load
 
     </script>
-    <script src="/Content/static/js/feedbacktest.js"></script>
 </body>
 
 </html>

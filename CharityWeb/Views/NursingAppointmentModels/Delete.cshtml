@@ -1,0 +1,132 @@
+﻿@model CharityWeb.Models.NursingAppointmentModels
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <style>
+        /* 容器样式 */
+        .container {
+            width: 60%;
+            margin: auto;
+            margin-top: 50px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* 标题样式 */
+        h3 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* 子标题样式 */
+        h4 {
+            color: #666;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* 分隔线样式 */
+        hr {
+            border-color: #ddd;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* 水平定义列表样式 */
+        .dl-horizontal dt {
+            width: 30%;
+            font-weight: bold;
+        }
+
+        .dl-horizontal dd {
+            width: 70%;
+            margin-left: 30%;
+        }
+
+        /* 表单按钮样式 */
+        .form-actions {
+            margin-top: 20px;
+        }
+
+            .form-actions input[type="submit"] {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+
+                .form-actions input[type="submit"]:hover {
+                    background-color: #0056b3;
+                }
+
+            .form-actions a {
+                margin-left: 10px;
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .form-actions a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+
+    <div class="container">
+        <h3>Are you sure you want to cancel this appointment?</h3>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.HomeId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.HomeId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.YourDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.YourDate)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-actions">
+                    <input type="submit" value="Delete" class="btn btn-default" /> |
+                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-link" })
+                </div>
+            }
+        </div>
+    </div>
+
+</body>
+</html>

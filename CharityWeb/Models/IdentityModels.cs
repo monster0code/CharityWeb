@@ -33,5 +33,6 @@ namespace CharityWeb.Models
         public DbSet<CharityWeb.Models.NursingHome> NursingHomes { get; set; }
         public DbSet<CharityWeb.Models.ActivityModels> Activities { get; set; }
         public DbSet<CharityWeb.Models.RateModels> Rate { get; set; }
+        public DbSet<CharityWeb.Models.NursingAppointmentModels> NursingAppointment { get; set; }
     }
 }

@@ -1,0 +1,230 @@
+﻿@model CharityWeb.Models.NursingAppointmentModels
+@using Microsoft.AspNet.Identity
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous">
+    </script>
+    <style>
+        .container {
+            width: 60%;
+            margin: auto;
+            margin-top: 50px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 10px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .text-danger {
+            color: red;
+        }
+
+        .btn-submit {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+            .btn-submit:hover {
+                background-color: #0056b3;
+            }
+
+        .btn-back {
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+        }
+        /* 表单按钮样式 */
+        .form-actions {
+            margin-top: 20px;
+        }
+
+        .form-actions a {
+            margin-left: 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .form-actions a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+<body>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+    @*    @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>NursingAppointmentModels</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HomeId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.HomeId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.HomeId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.YourDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.YourDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.YourDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }*@
+
+
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="container">
+            <h4>Change your Appointment</h4>
+            <hr />
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HomeId, htmlAttributes: new { @class = "control-label" })
+                <div class="form-control">
+                    @Html.DisplayFor(model => model.HomeId)
+                    @Html.HiddenFor(model => model.HomeId)
+                    @Html.ValidationMessageFor(model => model.HomeId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label" })
+                <div class="form-control">
+                    @Html.DisplayFor(model => model.UserName)
+                    @Html.HiddenFor(model => model.UserName)
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.YourDate, htmlAttributes: new { @class = "control-label" })
+                <div class="form-control">
+                    @Html.EditorFor(model => model.YourDate, new { htmlAttributes = new { @id = "appointment-date" } })
+                    @Html.ValidationMessageFor(model => model.YourDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <input type="submit" value="Save" class="btn-submit" /> |
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-link" })
+            </div>
+        </div>
+    }
+@*    <div style="margin-left: 370px; margin-top: 20px">
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn-back" })
+    </div>*@
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+
+    <script>
+    $(document).ready(function() {
+        var activityId = "@Model.HomeId";
+
+        // 使用 AJAX 请求获取当前用户已预约的日期列表
+        $.ajax({
+            url: "/NursingAppointmentModels/GetUserAppointments",
+            type: "GET",
+            data: { activityId: activityId },
+            success: function(response) {
+                var reservedDates = response;
+
+                // 初始化日期选择器
+                $("#appointment-date").datepicker({
+                    dateFormat: "yy-mm-dd",
+                    beforeShowDay: function(date) {
+                        var stringDate = $.datepicker.formatDate("yy-mm-dd", date);
+                        return [reservedDates.indexOf(stringDate) === -1];
+                    }
+                });
+            },
+            error: function(error) {
+                console.log("Error fetching user appointments:", error);
+            }
+        });
+    });
+    </script>
+</body>
+</html>

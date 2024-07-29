@@ -10,7 +10,7 @@ body {
     width: 100px;
     height: 40px;
     border: none;
-    background-color: orange;
+    background-color: #4CAF50;
     color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -85,10 +85,10 @@ body {
     margin: 0;
 }
 
-.feedback-rating input:checked+label {
-    background-color: orange;
+.feedback-rating input:checked + label {
+    background-color: #4CAF50;
     color: white;
-    border-color: orange;
+    border-color: #4CAF50;
 }
 
 .feedback-textarea {
@@ -106,7 +106,7 @@ body {
 }
 
 .feedback-modal-buttons button {
-    background-color: orange;
+    background-color: #4CAF50;
     color: white;
     border: none;
     padding: 10px 20px;

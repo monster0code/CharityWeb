@@ -1,0 +1,107 @@
+﻿@model CharityWeb.Models.NursingAppointmentModels
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <style>
+        /* 容器样式 */
+        .container {
+            width: 60%;
+            margin: auto;
+            margin-top: 50px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* 子标题样式 */
+        h4 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* 分隔线样式 */
+        hr {
+            border-color: #ddd;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* 水平定义列表样式 */
+        .dl-horizontal dt {
+            width: 30%;
+            font-weight: bold;
+        }
+
+        .dl-horizontal dd {
+            width: 70%;
+            margin-left: 30%;
+            margin-bottom: 10px;
+        }
+
+        /* 操作链接样式 */
+        .action-links {
+            margin-top: 20px;
+        }
+
+            .action-links a {
+                margin-right: 10px;
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .action-links a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+
+    <div class="container">
+        <div>
+            <h4>My Appointment</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.UserName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.UserName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.HomeId)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.HomeId)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.YourDate)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.YourDate)
+                </dd>
+
+            </dl>
+        </div>
+        <div class="action-links">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+
+</body>
+</html>

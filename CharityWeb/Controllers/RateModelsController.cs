@@ -46,18 +46,36 @@ namespace CharityWeb.Controllers
         // POST: RateModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        /*        [HttpPost]
+                [ValidateAntiForgeryToken]
+                public ActionResult Create([Bind(Include = "Id,Rating,Feedback,SubmittedUser")] RateModels rateModels)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        db.Rate.Add(rateModels);
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+
+                    return View(rateModels);
+                }*/
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Rating,Feedback,SubmittedUser")] RateModels rateModels)
+        public string CreateFeedback(int Rating, string Feedback, string SubmittedUser)
         {
+            var feeddback = new RateModels
+            {
+                Rating = Rating,
+                Feedback = Feedback,
+                SubmittedUser = SubmittedUser
+            };
             if (ModelState.IsValid)
             {
-                db.Rate.Add(rateModels);
+                db.Rate.Add(feeddback);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return "success";
             }
 
-            return View(rateModels);
+            return "error";
         }
 
         // GET: RateModels/Edit/5

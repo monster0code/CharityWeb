@@ -282,7 +282,7 @@
             <a href="@Url.Action("index", "Front")">Index</a>
             <a href="@Url.Action("place", "Front")">Nursing home</a>
             <a href="@Url.Action("activitylist", "Front")">Activity</a>
-            <a href="#">My appointment</a>
+            <a href="@Url.Action("Index", "NursingAppointmentModels")">My appointment</a>
         </nav>
     </header>
 
@@ -296,7 +296,7 @@
         <div>
             <label for="region">Region：</label>
             <select id="region">
-                <option value="不限">Select</option>
+                <option value="unlimited">Select</option>
                 <option value="北京">北京</option>
                 <option value="上海">上海</option>
                 <option value="天津">天津</option>
@@ -333,7 +333,7 @@
         <div>
             <label>Budget：</label>
             <div class="options" id="budget-options">
-                <span data-value="不限">不限</span>
+                <span data-value="unlimited">unlimited</span>
                 <span data-value="2000元以下">2000元以下</span>
                 <span data-value="2000到3000元">2000到3000元</span>
                 <span data-value="3000到4000元">3000到4000元</span>
@@ -399,7 +399,7 @@
         function filterResults() {
             const region = document.getElementById('region').value; // Get selected region
             const budgetSpans = document.querySelectorAll('#budget-options span'); // Get budget options
-            let budget = '不限'; // Default budget is '不限'
+            let budget = 'unlimited'; // Default budget is '不限'
 
             // Determine selected budget option
             budgetSpans.forEach(span => {
@@ -415,7 +415,7 @@
                 const cardPrice = parseFloat(card.getAttribute('data-price'));
 
                 // Check if card matches selected region and budget range
-                let regionMatch = (region === '不限') || cardRegion.startsWith(region);
+                let regionMatch = (region === 'unlimited') || cardRegion.startsWith(region);
                 let budgetMatch = checkBudgetMatch(budget, cardPrice);
 
                 // Display or hide the card based on matches
@@ -434,7 +434,7 @@
         // Function to check if card's price matches selected budget range
         function checkBudgetMatch(selectedBudget, cardPrice) {
             switch (selectedBudget) {
-                case '不限':
+                case 'unlimited':
                     return true;
                 case '2000元以下':
                     return cardPrice <= 2000;
@@ -457,14 +457,13 @@
 
         // Function to reset filters
         function resetFilters() {
-            document.getElementById('region').value = '不限'; // Reset region filter to '不限'
+            document.getElementById('region').value = 'unlimited'; // Reset region filter to '不限'
             document.querySelectorAll('#budget-options span').forEach(s => s.classList.remove('active')); // Remove 'active' class from all budget options
             filterResults(); // Apply filters after reset
         }
 
         document.addEventListener('DOMContentLoaded', filterResults); // Apply filters on page load
     </script>
-    <script src="/Content/static/js/feedbacktest.js"></script>
 </body>
 
 </html>

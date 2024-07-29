@@ -1,0 +1,140 @@
+﻿@model IEnumerable<CharityWeb.Models.NursingAppointmentModels>
+@using Microsoft.AspNet.Identity
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="/Content/static/css/styles.css">
+    <title>My Appointment</title>
+    <style>
+        /* 容器样式 */
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        /* 表格样式 */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            /* 表头样式 */
+            .table th {
+                background-color: #f2f2f2;
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+
+            /* 表格行样式 */
+            .table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+        /* 操作列按钮样式 */
+        .action-links a {
+            margin-right: 5px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            .action-links a:hover {
+                text-decoration: underline;
+            }
+    </style>
+
+</head>
+<body>
+    <header>
+        <div class="top-bar-wrapper">
+            <div class="top-bar">
+                <div class="webname">
+                    <img src="~/Content/static/icon/service.png" alt="icon" class="webname-icon">
+                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
+                </div>
+                <div class="contact">
+                    @if (Request.IsAuthenticated)
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="contact">
+                                <span style="margin-right: 10px">
+                                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link" })
+                                </span>
+                                <span><a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></span>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="contact">
+                            <span>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "nav-link" })</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <nav>
+            <a href="@Url.Action("index", "Front")">Index</a>
+            <a href="@Url.Action("place", "Front")">Nursing home</a>
+            <a href="@Url.Action("activitylist", "Front")">Activity</a>
+            <a href="@Url.Action("Index", "NursingAppointmentModels")">My appointment</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h3>
+            @*@Html.ActionLink("Create New", "Create")*@
+            My Appointment List
+        </h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.HomeId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.YourDate)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HomeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.YourDate)
+                        </td>
+                        <td class="action-links">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
