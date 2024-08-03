@@ -1,0 +1,110 @@
+﻿@model IEnumerable<CharityWeb.Models.NursingAppointmentModels>
+@using Microsoft.AspNet.Identity
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    ViewBag.Title = "Feedback";
+}
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous">
+    </script>
+    <div class="container">
+        <h3>
+            User Appointment List
+        </h3>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <form id="sendForm">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.HomeId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.YourDate)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="checkbox" name="selectedUsers" value="@item.UserName" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.HomeId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.YourDate)
+                                </td>
+                                <td></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button type="button" id="sendButton" class="btn btn-primary">Send Email</button>
+            </form>
+        }
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+            // Select all checkboxes
+            $('#selectAll').click(function () {
+                $('.checkbox').prop('checked', $(this).prop('checked'));
+            });
+
+            // Send selected users via AJAX
+            $('#sendButton').click(function () {
+                var selectedUsers = [];
+                $.each($("input[name='selectedUsers']:checked"), function () {
+                    selectedUsers.push($(this).val());
+                });
+                console.log(selectedUsers);
+
+                if (!selectedUsers.length) {
+                    alert("please select users")
+                    return;
+                }
+
+                $.ajax({
+                    url: "/NursingAppointmentModels/SendBluck",
+                    type: 'POST',
+                    data: JSON.stringify(selectedUsers),
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    success: function (response) {
+                        // Handle the response from the server
+                        if (response = "Success") {
+                            alert('Selected users sent successfully.');
+                            $('.checkbox').prop('checked', false);
+                            $('#selectAll').prop('checked', false);
+                        }
+                        else {
+                            alert(response.statusText);
+                        }
+                    },
+                    error: function (error) {
+                        // Handle any errors from the server.
+                        alert(error.statusText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>

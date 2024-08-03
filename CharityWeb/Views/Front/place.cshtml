@@ -354,16 +354,16 @@
         <h3>List of nursing homes</h3>
         <div class="cards" id="cards-container">
 
-@*            <div class="card" data-region="江苏" data-price="2500">
-                <img src="https://www.qckyly.com/data/upload/202311/20/170134351.png" alt="Card 2">
-                <div class="card-info">
-                    <p class="price">¥2500.00/月起</p>
-                    <p>苏州市相城区尚嘉托老院</p>
-                    <p class="location">住护管理 / 半自理</p>
-                    <p class="location">江苏苏州市</p>
-                </div>
-                <button class="hover-button"></button>
-            </div>*@
+            @*            <div class="card" data-region="江苏" data-price="2500">
+                    <img src="https://www.qckyly.com/data/upload/202311/20/170134351.png" alt="Card 2">
+                    <div class="card-info">
+                        <p class="price">¥2500.00/月起</p>
+                        <p>苏州市相城区尚嘉托老院</p>
+                        <p class="location">住护管理 / 半自理</p>
+                        <p class="location">江苏苏州市</p>
+                    </div>
+                    <button class="hover-button"></button>
+                </div>*@
 
             <!-- Add more cards as needed -->
             @foreach (var home in Model)
@@ -464,6 +464,19 @@
 
         document.addEventListener('DOMContentLoaded', filterResults); // Apply filters on page load
     </script>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About us</a>
+            <a href="#">Contact us</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Services</a>
+            <a href="#">Business cooperation</a>
+        </div>
+
+        <div class="footer-copyright" style="margin-top: 15px">
+            @DateTime.Now.Year - My ElderlyCare Hub
+        </div>
+    </footer>
 </body>
 
 </html>

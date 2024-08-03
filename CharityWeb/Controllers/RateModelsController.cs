@@ -15,6 +15,7 @@ namespace CharityWeb.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: RateModels
+        [Authorize]
         public ActionResult Index()
         {
             double averageRating = db.Rate.Average(f => f.Rating);

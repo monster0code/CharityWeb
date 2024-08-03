@@ -98,6 +98,44 @@
             .search-container input[type="text"]:focus {
                 outline: none;
             }
+
+/*        .footer {
+            background-color: #333;
+            color: #ccc;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 100px;
+        }
+
+        .footer-links {
+            margin-bottom: 10px;
+        }
+
+            .footer-links a {
+                color: #ccc;
+                margin: 0 10px;
+                text-decoration: none;
+            }
+
+                .footer-links a:hover {
+                    text-decoration: underline;
+                }
+
+        .footer a {
+            color: #ccc;
+        }
+
+            .footer a:hover {
+                color: #fff;
+                text-decoration: underline;
+            }
+
+        .footer-copy {
+            margin-top: 10px;
+        }*/
     </style>
     <script src="https://api.map.baidu.com/api?v=3.0&ak=u4DrOhWuNvTNNLQLWQ0tbNkfMSWtj1zr"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
@@ -264,7 +302,7 @@
         </div>
     }
 
-        <script>
+    <script>
         let slideIndex = 1;
         let slideInterval;
 
@@ -390,9 +428,9 @@
             addMarker(price, location, imgUrl);
         });*/
 
-        </script>
+    </script>
 
-        <script>
+    <script>
         // Initialize echarts instance
         var myChart = echarts.init(document.getElementById('chart-container'));
 
@@ -447,10 +485,10 @@
 
         // Use the specified chart configuration item and data to show chart
         myChart.setOption(option);
-        </script>
+    </script>
 
-        
-<script>
+
+    <script>
         var feedbackModal = document.getElementById("feedback-modal");
         var feedbackBtn = document.getElementById("feedbackButton");
         var feedbackSpan = document.getElementsByClassName("feedback-modal-close")[0];
@@ -493,6 +531,11 @@
                 return;
             }
 
+            if (containsXSS(feedbackText)) {
+                alert('Do not enter malicious code！');
+                return;
+            }
+
             var feedbackData = {
                 Rating: rating,
                 Feedback: feedbackText,
@@ -521,6 +564,25 @@
                 }
             });
         }
-</script>
-    </body>
+        // 检查输入是否包含潜在的XSS攻击代码
+        function containsXSS(input) {
+            var scriptPattern = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
+            return scriptPattern.test(input);
+        }
+    </script>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About us</a>
+            <a href="#">Contact us</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Services</a>
+            <a href="#">Business cooperation</a>
+        </div>
+
+        <div class="footer-copyright" style="margin-top: 15px">
+            @DateTime.Now.Year - My ElderlyCare Hub
+        </div>
+    </footer>
+
+</body>
 </html>

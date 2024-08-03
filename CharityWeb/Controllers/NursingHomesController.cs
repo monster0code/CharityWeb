@@ -19,6 +19,7 @@ namespace CharityWeb.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: NursingHomes
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(int? page)
         {
             var nursingHomes = db.NursingHomes.OrderBy(a => a.Name).ToList();

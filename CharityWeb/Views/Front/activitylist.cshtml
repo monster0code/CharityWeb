@@ -355,37 +355,37 @@
         <h3>List of activities</h3>
         <div class="cards" id="cards-container">
 
-@*            <div class="card" data-region="北京" data-time="Thursday">
-                <img src="https://www.qckyly.com/data/upload/202311/20/164001451.png" alt="Card 1">
-                <div class="card-info">
-                    <p class="activityName">太极拳</p>
-                    <p class="location">北京市东城区天坛公园</p>
-                    <p class="time">每周四下午</p>
+            @*            <div class="card" data-region="北京" data-time="Thursday">
+                    <img src="https://www.qckyly.com/data/upload/202311/20/164001451.png" alt="Card 1">
+                    <div class="card-info">
+                        <p class="activityName">太极拳</p>
+                        <p class="location">北京市东城区天坛公园</p>
+                        <p class="time">每周四下午</p>
+                    </div>
                 </div>
-            </div>
-            <div class="card" data-region="江苏" data-time="Wednesday evening">
-                <img src="https://www.qckyly.com/data/upload/202311/20/164020201.png" alt="Card 1">
-                <div class="card-info">
-                    <p class="activityName">太极拳</p>
-                    <p class="location">江苏省苏州市时代广场</p>
-                    <p class="time">每周三晚上</p>
-                </div>
-            </div>*@
+                <div class="card" data-region="江苏" data-time="Wednesday evening">
+                    <img src="https://www.qckyly.com/data/upload/202311/20/164020201.png" alt="Card 1">
+                    <div class="card-info">
+                        <p class="activityName">太极拳</p>
+                        <p class="location">江苏省苏州市时代广场</p>
+                        <p class="time">每周三晚上</p>
+                    </div>
+                </div>*@
 
             <!-- Add more cards as needed -->
-                @foreach (var home in Model)
-                {
-                    <div class="card" data-region="@home.Location" data-time="@home.Time">
-                        <a href="@Url.Action("Activity", "Front", new { id = home.ID })">
-                            <img src="@home.ImageUrl" alt="@home.Name" />
-                        </a>
-                        <div class="card-info">
-                            <p class="activityName">@home.Name</p>
-                            <p class="location">@home.Location</p>
-                            <p class="time">@home.Time</p>
-                        </div>
+            @foreach (var home in Model)
+            {
+                <div class="card" data-region="@home.Location" data-time="@home.Time">
+                    <a href="@Url.Action("Activity", "Front", new { id = home.ID })">
+                        <img src="@home.ImageUrl" alt="@home.Name" />
+                    </a>
+                    <div class="card-info">
+                        <p class="activityName">@home.Name</p>
+                        <p class="location">@home.Location</p>
+                        <p class="time">@home.Time</p>
                     </div>
-                }
+                </div>
+            }
         </div>
     </div>
 
@@ -448,6 +448,19 @@
         document.addEventListener('DOMContentLoaded', filterResults); // Apply filters on page load
 
     </script>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About us</a>
+            <a href="#">Contact us</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Services</a>
+            <a href="#">Business cooperation</a>
+        </div>
+
+        <div class="footer-copyright" style="margin-top: 15px">
+            @DateTime.Now.Year - My ElderlyCare Hub
+        </div>
+    </footer>
 </body>
 
 </html>

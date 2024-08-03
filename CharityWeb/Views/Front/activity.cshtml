@@ -246,7 +246,7 @@
 
     <div class="banner">
         <h1>Carefully select nursing institutions</h1>
-        <p>Index > Nursing home > Detail</p>
+        <p>Index > Activity > Detail</p>
     </div>
 
     <div class="content">
@@ -273,12 +273,12 @@
         </div>
 
         <div class="description" style="margin-top: 6px;">
-                <h2>AI introduction</h2>
-                <div id="ai-text"></div>
-            </div>
+            <h2>AI introduction</h2>
+            <div id="ai-text"></div>
         </div>
+    </div>
 
-        <script>
+    <script>
             function google_ai() {
                 var inputText = "please introduce @Model.Name";
 
@@ -297,8 +297,20 @@
                     }
                 });
             }
-        </script>
+    </script>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About us</a>
+            <a href="#">Contact us</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Services</a>
+            <a href="#">Business cooperation</a>
+        </div>
 
+        <div class="footer-copyright" style="margin-top: 15px">
+            @DateTime.Now.Year - My ElderlyCare Hub
+        </div>
+    </footer>
 </body>
 
 </html>

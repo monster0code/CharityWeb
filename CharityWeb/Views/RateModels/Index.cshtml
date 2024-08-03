@@ -4,30 +4,24 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">*@
+@*<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />*@
 <style>
-    .table td, .table th {
+/*    .table td, .table th {
         white-space: nowrap;
     }
 
     .table .btn {
         margin-right: 5px;
     }
-
-    .createNew {
-        margin-bottom: 5px;
-    }
 </style>
 
 <h2>User Feedback List</h2>
 
-@*<div class="createNew">
-    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
-</div>*@
 
-<table class="table table-bordered table-hover">
-    <thead class="thead-light">
+<table class="table">
+    <thead>
+        @*class="thead-light"*@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Rating)
@@ -72,8 +66,21 @@
 </table>
 
 <!-- 显示平均评分 -->
-<div style="margin-top: 20px;">
-    <p>Average Rating: @ViewData["AverageRating"]</p>
+<div style="margin-top: 30px; font-size: 20px">
+    <p>Average Rating: <strong>@String.Format("{0:F2}", ViewData["AverageRating"])</strong></p>
 </div>
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/DataTables/jquery.dataTables.js")
+    @Scripts.Render("~/Scripts/DataTables/dataTables.bootstrap.js")
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css"
+      rel="stylesheet" />
 
 

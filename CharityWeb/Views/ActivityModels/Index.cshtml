@@ -61,6 +61,12 @@
         margin-left: 0px;
         margin-top: 3px;
     }
+    .truncate {
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 </style>
 
 <h2>All activities</h2>
@@ -115,10 +121,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Time)
                 </td>
-                <td>
+                <td class="truncate">
                     @Html.DisplayFor(modelItem => item.ImageUrl)
                 </td>
-                <td>
+                <td class="truncate">
                     @Html.DisplayFor(modelItem => item.Info)
                 </td>
                 <td>

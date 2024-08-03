@@ -25,7 +25,7 @@ namespace CharityWeb.Controllers
                     int pageNumber = (page ?? 1); // 当前页码
                     return View(activities.ToPagedList(pageNumber, pageSize));
                 }*/
-
+        [Authorize(Roles = "Admin")]
         public ActionResult Index(string searchString, int? page)
         {
             var activity = from n in db.Activities
