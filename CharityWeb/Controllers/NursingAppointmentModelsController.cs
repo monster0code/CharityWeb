@@ -156,6 +156,56 @@ namespace CharityWeb.Controllers
             return Json(formattedDates, JsonRequestBehavior.AllowGet);
         }
 
+        // 获取当前用户对特定活动的预约日期列表
+        public JsonResult GetUserCalendarAppointments(int activityId)
+        {
+            var currentUser = User.Identity.GetUserName(); // 获取当前登录用户的用户名
+
+            // 根据活动 ID 和用户名查询已预约的日期列表
+            var reservedDates = db.NursingAppointment
+                .Where(a => a.HomeId == activityId && a.UserName == currentUser)
+                .OrderBy(a => a.YourDate)  // 按日期排序
+                .Select(a => a.YourDate)
+                .ToList();
+
+            // 将日期格式化为 FullCalendar 所需的事件格式
+            var events = reservedDates.Select(d => new
+            {
+                title = "My Appointment",
+                start = d.ToString("yyyy-MM-dd"), // FullCalendar 需要 ISO 格式
+                allDay = false // 如果是全天事件
+            }).ToList();
+
+            return Json(events, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult UpdateAppointmentDate(int id, DateTime newDate, DateTime oldDate)
+        {
+            var appointment = db.NursingAppointment.SingleOrDefault(a => a.HomeId == id && a.YourDate == oldDate);
+            Debug.WriteLine(appointment);
+            if (appointment == null)
+            {
+                return Json(new { success = false, message = "Appointment not found." });
+            }
+
+            // 更新日期
+            appointment.YourDate = newDate;
+
+            try
+            {
+                db.SaveChanges();  // 保存更改到数据库
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                // 捕捉任何可能的错误并返回失败消息
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+
+
         // send-email
         private async Task SendEmail(string recipient, string subject, string body)
         {

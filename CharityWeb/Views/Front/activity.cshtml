@@ -210,7 +210,7 @@
             <div class="top-bar">
                 <div class="webname">
                     <img src="/Content/static/icon/service.png" alt="icon" class="webname-icon">
-                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
+                    <a href="@Url.Action("index", "Home")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
                 </div>
                 <div class="contact">
                     @if (Request.IsAuthenticated)
@@ -261,7 +261,7 @@
                     <li><img src="/Content/static/icon/location.png" alt="icon"> Location: @Model.Location</li>
                 </ul>
                 <!-- <a href="#" class="registration-button disabled">已结束</a> -->
-                <button class="registration-button abled" onclick="google_ai()">AI</button>
+                <button class="registration-button abled" onclick="google_ai()">AI assistant</button>
             </div>
         </div>
         <div class="description">

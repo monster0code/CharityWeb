@@ -54,7 +54,7 @@
 
     .export-button {
         position: absolute;
-        right: 395px;
+        right: 205px;
     }
     .truncate {
         max-width: 150px;
@@ -156,9 +156,9 @@
 <div class="text-center mt-3">
     @using (Html.BeginForm("Index", "NursingHomes", FormMethod.Get))
     {
-        <label for="pageNumber">页码:</label>
+        <label for="pageNumber">Page:</label>
         <input type="number" id="pageNumber" name="page" min="1" class="form-control d-inline-block w-auto" style="width: 70px;" />
-        <input type="submit" value="跳转" class="btn btn-primary" />
+        <input type="submit" value="Go" class="btn btn-primary" />
     }
 </div>
 <script>

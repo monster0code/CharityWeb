@@ -1,37 +1,68 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <meta charset="utf-8">
+    <title>FullCalendar Example</title>
+    <style>
+        /* 设置容器的宽度、高度，并居中 */
+        #calendar {
+            width: 50%; /* 调整宽度大小 */
+            height: 300px; /* 调整高度大小 */
+            margin: 0 auto; /* 使其水平居中 */
+            padding: 20px; /* 可选：添加一些内边距 */
+        }
+    </style>
+
+    <!-- FullCalendar CSS -->
+    <link href="/Content/fullcalendar.css" rel="stylesheet" />
+    <!-- jQuery -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous">
+    </script>
+    <!-- Moment.js -->
+    <script src="/Scripts/moment.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="/Scripts/fullcalendar.js"></script>
+
 </head>
 <body>
-    <script type="importmap">
-        {
-          "imports": {
-            "@google/generative-ai": "https://esm.run/@google/generative-ai"
-          }
-        }
-    </script>
-    <script type="module">
-        import { GoogleGenerativeAI } from "@google/generative-ai";
+    <div id="calendar"></div>
 
-        // Fetch your API_KEY
-        const API_KEY = "AIzaSyDFHfRkIV9d7aMH1rBESlox25jrKmZtwWg";
-
-        // Access your API key (see "Set up your API key" above)
-        const genAI = new GoogleGenerativeAI(API_KEY);
-
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        //window.myModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-        localStorage.setItem('myModel', JSON.stringify(model));
-        async function run() {
-            const prompt = "Write a story about an AI and magic"
-
-            const result = await model.generateContent(prompt);
-            const response = await result.response;
-            const text = response.text();
-            console.log(text);
-        }
+    <script>
+        $(document).ready(function () {
+            $('#calendar').fullCalendar({
+                // 定义事件加载的回调函数
+                displayEventTime: false, // 不显示事件的时间
+                dayClick: function (date, jsEvent, view) {
+                    // 在这里执行你希望执行的操作
+                    alert('You clicked on ' + date.format());
+                },
+                events: function (start, end, timezone, callback) {
+                    $.ajax({
+                        url: '/NursingAppointmentModels/GetUserCalendarAppointments',
+                        type: 'GET',
+                        data: { activityId: 4 },
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data);
+                            callback(data);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching events:', error);
+                        }
+                    });
+                },
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                editable: true,
+                droppable: false
+            });
+        });
     </script>
 </body>
 </html>

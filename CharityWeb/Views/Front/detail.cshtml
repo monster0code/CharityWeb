@@ -12,12 +12,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>nursing home detail</title>
     <link rel="stylesheet" href="/Content/static/css/styles.css">
+@*    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous">
+    </script>*@
+    <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
+    <script src="https://api.map.baidu.com/api?v=3.0&ak=u4DrOhWuNvTNNLQLWQ0tbNkfMSWtj1zr"></script>
+    <!-- FullCalendar CSS -->
+    <link href="/Content/fullcalendar.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
             crossorigin="anonymous">
     </script>
-    <script src="https://cdn.userway.org/widget.js" data-account="GwdxhRRYt4"></script>
-    <script src="https://api.map.baidu.com/api?v=3.0&ak=u4DrOhWuNvTNNLQLWQ0tbNkfMSWtj1zr"></script>
+    <!-- Moment.js -->
+    <script src="/Scripts/moment.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="/Scripts/fullcalendar.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -299,6 +312,13 @@
             .btn-cancel:hover {
                 background-color: #c0c0c0; /* 悬停时背景颜色变深 */
             }
+
+        #calendar {
+            width: 50%; /* 调整宽度大小 */
+            height: 300px; /* 调整高度大小 */
+            margin: 0 auto; /* 使其水平居中 */
+            padding: 20px; /* 可选：添加一些内边距 */
+        }
     </style>
 </head>
 
@@ -308,7 +328,7 @@
             <div class="top-bar">
                 <div class="webname">
                     <img src="~/Content/static/icon/service.png" alt="icon" class="webname-icon">
-                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
+                    <a href="@Url.Action("index", "Home")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
                 </div>
                 <div class="contact">
                     @if (Request.IsAuthenticated)
@@ -354,18 +374,21 @@
                 <h2>@Model.Name</h2>
                 <p class="price">@Model.Price/month</p>
                 <ul class="features">
-                    <li>Prices are for reference only</li>
+                    <li style="color: #777;">Prices are for reference only</li>
                     <li><img src="~/Content/static/icon/phone.png" alt="icon"> Phone: 0412345678</li>
                     <li><img src="/Content/static/icon/person.png" alt="icon"> Max people: unlimited</li>
-                    <li><img src="/Content/static/icon/location.png" alt="icon"> @Model.Location</li>
+                    <li><img src="/Content/static/icon/location.png" alt="icon"> Location: @Model.Location</li>
                 </ul>
                 <!-- <a href="#" class="registration-button disabled">已结束</a> -->
-                <button class="registration-button abled" id="feedbackButton">预约</button>
+                <button class="registration-button abled" id="feedbackButton" style="margin-top: 20px">Appointment</button>
             </div>
         </div>
     </div>
+
+    <div id='calendar'></div>
+
     <!-- Baidu Map -->
-    <h2 style="text-align: center; margin-top: 50px;">path planning</h2>
+    <h2 style="text-align: center; margin-top: 500px;">path planning</h2>
     <div id="BaiduMap"></div>
 
     <script>
@@ -394,7 +417,7 @@
                 currentAddress = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
 
                 // 弹出提示框显示当前位置具体地址
-                alert('您的位置：' + currentAddress);
+                alert('Your location：' + currentAddress);
 
                 // 假设目标地址是上海市浦东新区的具体位置（例如：上海市浦东新区张江高科技园区）
                 var targetAddress = "@Model.Location";
@@ -464,7 +487,7 @@
         </div>
     }
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
 
@@ -527,6 +550,170 @@
             const UserName = document.getElementById("Username").value;
             const AppointmentDate = document.getElementById("appointment-date").value;
 
+            if (!UserName) {
+                alert("please login first");
+                return;
+            }
+
+            var regex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!isValidDate(AppointmentDate)) {
+                alert("Your date format is invalid.");
+                return;
+            }
+
+            // 检查是否选择了日期
+            if (!AppointmentDate) {
+                alert("Please select an appointment date.");
+                return;
+            }
+
+            var data = {
+                UserName: UserName,
+                HomeId: HomeId,
+                Date: AppointmentDate
+            };
+
+            // Make a POST request to the controller action with the data.
+            $.ajax({
+                url: "/NursingAppointmentModels/CreateAppointment",
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                success: function (response) {
+                    // Handle the response from the server
+                    if (response = "Success") {
+                        alert("UserName[" + UserName + "] had made an appointment on " + AppointmentDate + " for " + "HomeId[" + HomeId + "].");
+                    }
+                    else {
+                        alert(response.statusText);
+                    }
+                },
+                error: function (error) {
+                    // Handle any errors from the server.
+                    alert(error.statusText);
+                }
+            });
+        }
+        function isValidDate(dateString) {
+            var date = new Date(dateString);
+
+            // 判断日期对象是否有效，且输入的字符串与解析后的日期字符串是否一致
+            return !isNaN(date.getTime()) && date.toISOString().slice(0, 10) === dateString;
+        }
+    </script>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">About us</a>
+            <a href="#">Contact us</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Services</a>
+            <a href="#">Business cooperation</a>
+        </div>
+
+        <div class="footer-copyright" style="margin-top: 15px">
+            @DateTime.Now.Year - My ElderlyCare Hub
+        </div>
+    </footer>
+
+    <script>
+         var activityId = "@Model.ID";
+        $(document).ready(function () {
+            $('#calendar').fullCalendar({
+                // 定义事件加载的回调函数
+                displayEventTime: false, // 不显示事件的时间
+                dayClick: function (date, jsEvent, view) {
+                    // 在这里执行你希望执行的操作
+                    // alert('You clicked on ' + date.format());
+                    // 显示 confirm 对话框
+                    var userConfirmed = confirm("Do you want to make an appointment on " + date.format());
+
+                    // 根据用户点击的按钮执行相应的操作
+                    if (userConfirmed) {
+                        MakeAppointment(date.format());
+                        location.reload();
+                    } else {
+                        console.log("date");
+                    }
+                },
+                eventRender: function (event, element) {
+                    // 保存原始的开始和结束日期
+                    event.originalStart = event.start.clone();
+                    if (event.end) {
+                        event.originalEnd = event.end.clone();
+                    }
+                },
+                eventDrop: function (event, delta, revertFunc) {
+                    // 确认用户是否真的要更改日期
+                    if (!confirm("Are you sure about this change?")) {
+                        revertFunc();  // 如果用户取消，恢复原来的日期
+                    } else {
+                        // 发送 AJAX 请求，将新的日期发送到服务器
+                        $.ajax({
+                            url: '/NursingAppointmentModels/UpdateAppointmentDate',  // 更改为实际的控制器路径
+                            type: 'POST',
+                            data: {
+                                id: activityId,  // 事件的 ID，用于标识预约
+                                newDate: event.start.format(),  // 新的日期
+                                oldDate: event.originalStart.format("YYYY-MM-DD")
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    alert("Appointment updated successfully!");
+                                } else {
+                                    alert("Failed to update the appointment.");
+                                    revertFunc();  // 如果更新失败，恢复原来的日期
+                                }
+                            },
+                            error: function () {
+                                alert("Error updating the appointment.");
+                                revertFunc();  // 如果请求失败，恢复原来的日期
+                            }
+                        });
+                        console.log(event.originalStart.format("YYYY-MM-DD"));
+                    }
+                },
+                events: function (start, end, timezone, callback) {
+                    $.ajax({
+                        url: '/NursingAppointmentModels/GetUserCalendarAppointments',
+                        type: 'GET',
+                        data: { activityId: activityId },
+                        dataType: 'json',
+                        success: function (data) {
+                            callback(data);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error fetching events:', error);
+                        }
+                    });
+                },
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                editable: true,
+                droppable: false
+            });
+        });
+
+        function MakeAppointment(AppointmentDate) {
+
+            // Get the data from the input field.
+            const HomeId = document.getElementById("activity").value;
+            const UserName = document.getElementById("Username").value;
+
+            if (!UserName) {
+                alert("please login first");
+                return;
+            }
+
+            var regex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!isValidDate(AppointmentDate)) {
+                alert("Your date format is invalid.");
+                return;
+            }
+
             // 检查是否选择了日期
             if (!AppointmentDate) {
                 alert("Please select an appointment date.");
@@ -562,19 +749,6 @@
             });
         }
     </script>
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="#">About us</a>
-            <a href="#">Contact us</a>
-            <a href="#">Privacy policy</a>
-            <a href="#">Services</a>
-            <a href="#">Business cooperation</a>
-        </div>
-
-        <div class="footer-copyright" style="margin-top: 15px">
-            @DateTime.Now.Year - My ElderlyCare Hub
-        </div>
-    </footer>
 </body>
 
 </html>

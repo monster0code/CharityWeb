@@ -1,8 +1,24 @@
 ﻿@model CharityWeb.Models.ExternalLoginListViewModel
 @using Microsoft.Owin.Security
 
-<h4>Use another service to log in.</h4>
-<hr />
+<style>
+    .btn-google {
+        background-color: #ffffff;
+        border: 1px solid #dddddd;
+        color: #444444;
+        width: 100%;
+        text-align: left;
+        padding-left: 10px;
+    }
+
+        .btn-google img {
+            width: 30px;
+            margin-right: 10px;
+        }
+</style>
+
+@*<h4>Use another service to log in.</h4>*@
+@*<hr />*@
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
     if (loginProviders.Count() == 0) {
@@ -18,8 +34,19 @@
             @Html.AntiForgeryToken()
             <div id="socialLoginList">
                 <p>
-                    @foreach (AuthenticationDescription p in loginProviders) {
-                        <button type="submit" class="btn btn-outline-dark" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                    @foreach (AuthenticationDescription p in loginProviders)
+                    {
+                        @* <button type="submit" class="btn btn-outline-dark" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>*@
+                        if (p.AuthenticationType == "Google")
+                        {
+                            <button type="submit" class="btn btn-google" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIFzZ6yEc4GKVDZRDdAL4NFhF5dmaze8x4gw&s" alt="Google logo" /> Sign in with Google
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline-dark" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                        }
                     }
                 </p>
             </div>

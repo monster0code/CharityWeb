@@ -55,7 +55,7 @@ namespace CharityWeb.Controllers
         [HttpPost] // 根据前端发送请求的方法（POST 或者 GET）
         public async Task<ActionResult> AIprocessAsync(string text)
         {
-            // 在这里处理业务逻辑，可以调用服务层方法等
+            // Google Gemini
             Debug.WriteLine(text);
             var apiKey = "AIzaSyDFHfRkIV9d7aMH1rBESlox25jrKmZtwWg";
 

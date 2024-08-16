@@ -53,7 +53,6 @@ namespace CharityWeb.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Location,Price,ImageUrl,Info")] NursingHome nursingHome)
         {
             if (ModelState.IsValid)

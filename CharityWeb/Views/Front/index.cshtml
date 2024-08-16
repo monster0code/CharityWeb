@@ -63,14 +63,14 @@
             height: 600px;
         }
 
-        .search-container {
+        /*.search-container {
             display: flex;
             align-items: center;
             width: 350px;
             margin: 0 auto;
             border: 1px solid #ccc;
-            border-radius: 15px; /* 调整这里的值以减少圆角 */
-            overflow: hidden;
+            border-radius: 15px;*/ /* 调整这里的值以减少圆角 */
+            /*overflow: hidden;
         }
 
             .search-container input[type="text"] {
@@ -78,8 +78,8 @@
                 padding: 12px;
                 flex: 1;
                 font-size: 16px;
-                border-radius: 15px 0 0 15px; /* 只对左边进行圆角设置 */
-            }
+                border-radius: 15px 0 0 15px;*/ /* 只对左边进行圆角设置 */
+            /*}
 
             .search-container input[type="submit"] {
                 background-color: #0074A9;
@@ -87,9 +87,9 @@
                 color: white;
                 padding: 15px 0px;
                 cursor: pointer;
-                border-radius: 0 15px 15px 0; /* 只对右边进行圆角设置 */
-                white-space: nowrap; /* 确保按钮文字不被截断 */
-            }
+                border-radius: 0 15px 15px 0;*/ /* 只对右边进行圆角设置 */
+                /*white-space: nowrap;*/ /* 确保按钮文字不被截断 */
+            /*}
 
                 .search-container input[type="submit"]:hover {
                     background-color: #005f85;
@@ -97,45 +97,42 @@
 
             .search-container input[type="text"]:focus {
                 outline: none;
-            }
+            }*/
 
-/*        .footer {
-            background-color: #333;
-            color: #ccc;
-            text-align: center;
-            padding: 20px 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            margin-top: 100px;
+        .slide {
+            background-color: #f5f5f5; /* 或者你所希望的背景颜色 */
         }
 
-        .footer-links {
-            margin-bottom: 10px;
+
+        .search-container {
+            width: 50%; /* 搜索框容器的宽度，调整为你想要的比例 */
+            margin: 0 auto; /* 将容器居中 */
+            padding: 5px; /* 容器内部的边距，可以根据需要调整 */
+            background-color: white; /* 可选：容器的背景色 */
+            border-radius: 5px; /* 可选：容器的圆角 */
         }
 
-            .footer-links a {
-                color: #ccc;
-                margin: 0 10px;
-                text-decoration: none;
-            }
-
-                .footer-links a:hover {
-                    text-decoration: underline;
-                }
-
-        .footer a {
-            color: #ccc;
+        .gcse-search {
+            width: 100%; /* 使搜索框适应容器的宽度 */
+            background-color: white; /* 蓝色背景 */
+            color: white; /* 白色文字 */
+            border-radius: 5px; /* 圆角边框 */
+            padding: 10px; /* 内边距 */
         }
 
-            .footer a:hover {
-                color: #fff;
-                text-decoration: underline;
+            .gcse-search input.gsc-input {
+                width: calc(100% - 60px); /* 调整输入框的宽度以适应按钮 */
             }
 
-        .footer-copy {
-            margin-top: 10px;
-        }*/
+            .gcse-search button.gsc-search-button {
+                background-color: #007bff; /* 保持按钮的蓝色 */
+                color: white; /* 按钮文字白色 */
+                border: none; /* 去掉按钮的边框 */
+                border-radius: 0 5px 5px 0; /* 圆角只作用于右侧 */
+            }
+
+
+
     </style>
     <script src="https://api.map.baidu.com/api?v=3.0&ak=u4DrOhWuNvTNNLQLWQ0tbNkfMSWtj1zr"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
@@ -147,7 +144,7 @@
             <div class="top-bar">
                 <div class="webname">
                     <img src="~/Content/static/icon/service.png" alt="icon" class="webname-icon">
-                    <a href="@Url.Action("index", "Front")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
+                    <a href="@Url.Action("index", "Home")" style="color: white; text-decoration: none;">ElderlyCare Hub</a>
                 </div>
                 <div class="contact">
                     @if (Request.IsAuthenticated)
@@ -251,14 +248,21 @@
 
 
     <h2 style="text-align: center; margin-top: 50px;">Search more information about aged care</h2>
-    <form action="https://www.google.com/search" method="get" target="_blank">
+@*    <form action="https://www.google.com/search" method="get" target="_blank">
         <div class="search-container">
             <input type="hidden" name="cx" value="daf45ee6c91f73e725144d17a74c85cac160f1e6d61cc7d2b1dbeba3be27aa01">
             <input type="hidden" name="ie" value="UTF-8">
             <input type="text" name="q" size="30" placeholder="Search...">
             <input type="submit" value="Search">
         </div>
-    </form>
+    </form>*@
+
+<div class="search-container">
+    <script async src="https://cse.google.com/cse.js?cx=5476ebbe6630244d3"></script>
+    <div class="gcse-search"></div>
+</div>
+
+
 
 
 
