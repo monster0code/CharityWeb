@@ -241,7 +241,7 @@ namespace CharityWeb.Controllers
         public Task SendGridEmail(string email, string subject, string htmlMessage)
         {
             Debug.WriteLine("sending...");
-            var apiKey = "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";
+            var apiKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx";
             var client = new SendGridClient(apiKey);
 
             var from = new EmailAddress("persist.1015.you@gmail.com", "Notification");
