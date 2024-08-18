@@ -61,7 +61,7 @@ namespace CharityWeb
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
                 ClientId = "52840161409-iv6vko259k9sdj5h4thu24fgq13se5jj.apps.googleusercontent.com",
-                ClientSecret = "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",
+                ClientSecret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
                 Provider = new GoogleOAuth2AuthenticationProvider
                 {
                     OnApplyRedirect = context =>
