@@ -57,7 +57,7 @@ namespace CharityWeb.Controllers
         {
             // Google Gemini
             Debug.WriteLine(text);
-            var apiKey = "AIzaSyDFHfRkIV9d7aMH1rBESlox25jrKmZtwWg";
+            var apiKey = "xxxxxxxxxxxxxxxxxxxxxxxx";
 
             var model = new GenerativeModel(apiKey);
             //or var model = new GeminiProModel(apiKey)
