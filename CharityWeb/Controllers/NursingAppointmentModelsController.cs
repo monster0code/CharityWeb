@@ -213,7 +213,7 @@ namespace CharityWeb.Controllers
             try
             {
                 MailMessage message = new MailMessage();
-                message.From = new MailAddress("persist.1015.you@gmail.com");
+                message.From = new MailAddress("youemail@gmail.com");
                 message.To.Add(new MailAddress(recipient));
                 message.Subject = subject;
                 message.Body = body;
@@ -244,7 +244,7 @@ namespace CharityWeb.Controllers
             var apiKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx";
             var client = new SendGridClient(apiKey);
 
-            var from = new EmailAddress("persist.1015.you@gmail.com", "Notification");
+            var from = new EmailAddress("youemail@gmail.com", "Notification");
             var to = new EmailAddress(email);
             var message = MailHelper.CreateSingleEmail(from, to, subject, "", htmlMessage);
 
