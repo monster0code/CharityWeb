@@ -1,4 +1,4 @@
-# A charit web developed by .net
+# A charity web developed by .net
 readme文件正在完善
 ![image](https://github.com/user-attachments/assets/3daf5d1f-0f98-4e30-9627-3534dbf0a238)
 
